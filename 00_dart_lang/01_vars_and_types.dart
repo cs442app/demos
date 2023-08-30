@@ -22,17 +22,21 @@ void simpleTypes() {
   int inum = 42;
   double fpnum = 3.14;
   String snum = '442';
+  // We should make the above var not directly declared
 
   print('inum.runtimeType = ${inum.runtimeType}');
   print('fpnum.runtimeType = ${fpnum.runtimeType}');
   print('snum.runtimeType = ${snum.runtimeType}');
 
+  // Statically typed so does not work
   // inum = fpnum;
   // fpnum = inum;
 
   inum = fpnum.toInt();
   fpnum = inum.toDouble();
   // fpnum = inum as double;
+  // ^ explicit type cast still fails as int not subclass of double
+
 
   inum = int.parse(snum);
   snum = inum.toString();
@@ -42,14 +46,17 @@ void simpleTypes() {
 
 void nullableTypes() {
   int n = 10; // try initializing with `null`
+  // to declare as null: int? n = null;
 
   print('n.runtimeType = ${n.runtimeType}');
 
   print(n == null);
 
   print(n.abs());
+  // if using int? do the following: print(n?.abs()); which only if not null will do abs()
 
   print(n + 10);
+  // if using int? can do following: print(n!+10); which ensures that n is not null
 }
 
 /*****************************************************************************/
@@ -83,7 +90,7 @@ void complexTypes() {
 
   print(listOfObjs[0] is int);
   // print(listOfObjs[0] + 10);
-
+  // print((listOfObjs[0] as int) + 10);
   print(listOfObjs[2] is String);
   // print(listOfObjs[2].length);
 

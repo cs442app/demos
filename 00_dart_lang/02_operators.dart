@@ -85,6 +85,7 @@ void main() {
     ..add(9)
     ..add(10);
   print(list);
+  // call all methods on object, different from method chaining
 
   // Type test operators
   print("\nType Test Operators:");

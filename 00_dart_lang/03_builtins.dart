@@ -63,10 +63,13 @@ void records() {
   (double,double) point1 = (3.14, 2.71);
 
   (double x, double y) point2 = (3, 2);
+  // x and y do not stick
 
   ({double x, double y}) point3 = (x: 3, y: 2);
 
   ({double w, double z}) point4 = (w: 4, z: 3);
+
+  //Points 2 and 3 have same type while 4 has different type
 
   var point5 = ('coordinates', x: 3.5, y: 2.1);
 
@@ -83,8 +86,8 @@ void records() {
   print(point3.runtimeType);
   print('point3.x = ${point3.x}, point3.y = ${point3.y}');
 
-  // point1 = point3; // how to fix this?
-  // point3 = point4; // how to fix this?
+  // point1 = point3; // how to fix this? point1 = (point3.x, point3.y)
+  // point3 = point4; // how to fix this? point3 = (x:point4.w,y:point4.z)
 
   print(point5.runtimeType);
   print('${point5.$1}: point5.x = ${point5.x}, point5.y = ${point5.y}');
