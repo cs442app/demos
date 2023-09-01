@@ -88,31 +88,6 @@ void records() {
 
   print(point5.runtimeType);
   print('${point5.$1}: point5.x = ${point5.x}, point5.y = ${point5.y}');
-
-  var p = point1; // try different values for `p`
-  switch (p) {
-    case (double x, double y):
-      print('p is a pair of doubles: ($x, $y)');
-      break;
-    case (x: double a, y: double b):
-      print('p is a pair of named doubles: (x=$a, y=$b)');
-      break;
-    case (w: double a, z: double b):
-      print('p is a pair of named doubles: (w=$a, z=$b)');
-      break;
-    case (String label, x: double a, y: double b):
-      print('p is a labeled pair of doubles: $label (x=$a, y=$b)');
-      break;
-  }
-
-  var (x,y) = vectorAdd((1, 2), (3, 4));
-  print('x = $x, y = $y');
-}
-
-(double,double) vectorAdd((double,double) v1, (double,double) v2) {
-  var (x1,y1) = v1;
-  var (x2,y2) = v2;
-  return (x1 + x2, y1 + y2);
 }
 
 /*****************************************************************************/
@@ -148,17 +123,41 @@ void collections() {
 
   // Iterating over collections
   print('\nIterating over list:');
-  for (var color in colors) {
+  for (final color in colors) {
     print(color);
   }
 
   print('\nIterating over set:');
-  for (var number in numbers) {
+  for (final number in numbers) {
     print(number);
   }
 
   print('\nIterating over map:');
-  for (var entry in ages.entries) {
+  for (final entry in ages.entries) {
     print('${entry.key} is ${entry.value} years old');
+  }
+
+  // Collections of collections ...
+  var matrix = <List<int>>[
+    [1, 2, 3],
+    [4, 5, 6],
+  ];
+
+  for (final row in matrix) {
+    for (final element in row) {
+      print(element);
+    }
+  }
+
+  var matrixMap = <String, List<int>>{
+    'row1': [1, 2, 3],
+    'row2': [4, 5, 6],
+  };
+
+  for (final entry in matrixMap.entries) {
+    print(entry.key);
+    for (final element in entry.value) {
+      print(element);
+    }
   }
 }

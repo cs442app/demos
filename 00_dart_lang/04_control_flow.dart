@@ -1,5 +1,3 @@
-import 'dart:math';
-
 /**
  * Topics to demonstrate:
  * 
@@ -8,6 +6,9 @@ import 'dart:math';
  * - Pattern matching
  * 
  */
+
+import 'dart:math';
+
 
 void main() {
   loops();
@@ -24,6 +25,7 @@ void loops() {
     print(i);
   }
 
+
   // while loop
   print('\nwhile loop:');
   int i = 0;
@@ -32,6 +34,7 @@ void loops() {
     i++;
   }
 
+
   // do-while loop
   print('\ndo-while loop:');
   i = 0;
@@ -39,6 +42,7 @@ void loops() {
     print(i);
     i++;
   } while (i < 5);
+
 
   // for-in loop
   print('\nfor-in loop:');
@@ -61,6 +65,7 @@ void branches() {
   } else {
     print('x == 5');
   }
+
 
   // switch-case
   print('\nswitch-case:');
@@ -88,6 +93,7 @@ void branches() {
     default:
       print('Invalid score!');
   }
+
 
   // switch-case as expression
   String? grade = switch(score) {
@@ -146,6 +152,7 @@ void patterns() {
   var (x,y) = vectorAdd((1, 2), (3, 4));
   print('x = $x, y = $y');
 }
+
 
 (int,int) vectorAdd((int,int) v1, (int,int) v2) {
   var (x1,y1) = v1;

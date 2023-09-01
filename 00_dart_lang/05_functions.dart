@@ -7,6 +7,8 @@
  * - Higher-order functions
  * - Lexical scope (closures)
  */
+import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
 void main() {
@@ -27,6 +29,7 @@ void parameterOptions() {
   printCharacterSheet2(name: 'Alice', ability: 'Fireball', hp: 1000);
 }
 
+
 void printCharacterSheet(String name, [int hp=100, String? ability]) {
   print('Name: $name');
   print('HP: $hp');
@@ -34,6 +37,7 @@ void printCharacterSheet(String name, [int hp=100, String? ability]) {
     print('Ability: $ability');
   }
 }
+
 
 void printCharacterSheet2({
   required String name,
@@ -53,17 +57,21 @@ int foo(int x) {
   return x * 2;
 }
 
+
 void anonymousFunctions() {
   int Function(int) fn1 = foo;
   var fn2 = foo;
 
   print('fn1 is ${fn1.runtimeType}');
+  print('fn2 is ${fn2.runtimeType}');
   print('fn1(5) = ${fn1(5)}');
+  print('fn2(5) = ${fn2(5)}');
 
   var fn3 = (int x) => x * 2;
 
   var fn4 = (int x) {
-    return x * 2;
+    x *= 2;
+    return x;
   };
 
   var fn5 = ({required int x}) => x * 2;
@@ -75,22 +83,6 @@ void anonymousFunctions() {
 
 /*****************************************************************************/
 
-void hofs() {
-  const list = ['dart', 'is', 'a', 'semi-cool', 'language'];
-
-  final pairs = map(list, (s) => (s.length, s));
-  print(pairs);
-
-  final filtered = filter(pairs, (pair) => pair.$1 > 5);
-  print(filtered);
-
-  list.forEach((element) => print(element));
-
-  ({'Alice': 30, 'Bob': 25, 'Carol': 28, 'David': 22}).forEach((name, age) {
-    print('$name: $age');
-  });
-}
-
 List<E> map<E,T>(List<T> list, E Function(T) f) {
   // note: `E Function(T) f` is the same as `E f(T)`
   final result = <E>[];
@@ -99,6 +91,7 @@ List<E> map<E,T>(List<T> list, E Function(T) f) {
   }
   return result;
 }
+
 
 List<E> filter<E>(List<E> list, bool Function(E) pred) {
   // note: `bool Function(E) pred` is the same as `bool pred(E)`
@@ -109,6 +102,45 @@ List<E> filter<E>(List<E> list, bool Function(E) pred) {
     }
   }
   return result;
+}
+
+void hofs() {
+  const list = ['dart', 'is', 'a', 'semi-cool', 'language'];
+
+
+  final pairs = map(list, (s) => (s.length, s));
+  print(pairs);
+
+
+  final filtered = filter(pairs, (pair) => pair.$1 > 5);
+  print(filtered);
+
+
+  list.map((s) => (s.length, s))
+      .where((pair) => pair.$1 > 5)
+      .forEach((element) => print(element));
+
+
+  var grades = <String, List<double>> {
+    'Alice': [90, 100, 95],
+    'Bob': [90, 80, 85],
+    'Carol': [70, 75, 80],
+    'David': [60, 70, 65],
+  };
+
+
+  grades.forEach((name, scores) {
+    final maxScore = scores.reduce(max);
+    print('$name: $maxScore');
+  });
+
+
+  HttpClient()
+      .getUrl(Uri.parse('https://moss.cs.iit.edu/cs440'))
+      .then((request) => request.close())
+      .then((response) => response.transform(Utf8Decoder()))
+      .then((utf8) => utf8.transform(LineSplitter()))
+      .then((lines) => lines.take(10).forEach((line) => print(line)));
 }
 
 /*****************************************************************************/

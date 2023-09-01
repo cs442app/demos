@@ -10,6 +10,9 @@
  * - Generics
  */
 
+import 'dart:math';
+
+
 // Classes
 class Shape {
   double area() {
@@ -17,6 +20,8 @@ class Shape {
   }
 }
 
+
+// Inheritance
 class Circle extends Shape {
   double radius;
 
@@ -27,9 +32,13 @@ class Circle extends Shape {
   double get diameter => radius * 2;
   set diameter(double value) => radius = value / 2;
 
-  @override
   double area() {
     return 3.14159 * radius * radius;
+  }
+
+  // Operator overloading
+  Circle operator +(Circle other) {
+    return Circle(this.radius + other.radius);
   }
 }
 
@@ -40,19 +49,29 @@ class Rectangle extends Shape {
   // Constructors
   Rectangle(this.width, this.height);
 
-  @override
   double area() {
     return width * height;
   }
 }
 
-// Mixin
-mixin PositionMixin {
-  double x = 0;
-  double y = 0;
+class Square extends Rectangle {
+  Square(double side) : super(side, side);
 }
 
-class PositionedCircle extends Circle with PositionMixin {
+
+// Mixin
+mixin Positioned {
+  double x = 0;
+  double y = 0;
+
+  double distanceTo(Positioned other) {
+    final dx = x - other.x;
+    final dy = y - other.y;
+    return sqrt(dx * dx + dy * dy);
+  }
+}
+
+class PositionedCircle extends Circle with Positioned {
   PositionedCircle(double radius, double x, double y)
       : super(radius) {
     this.x = x;
@@ -60,44 +79,51 @@ class PositionedCircle extends Circle with PositionMixin {
   }
 }
 
-// Operator Overloading
-class Vector {
-  double x, y;
+class Blob with Positioned {
+  final String name;
 
-  Vector(this.x, this.y);
-
-  Vector operator +(Vector other) {
-    return Vector(x + other.x, y + other.y);
+  Blob(this.name, double x, double y) {
+    this.x = x;
+    this.y = y;
   }
 }
 
-// Generics
-class Box<T> {
-  T value;
-
-  Box(this.value);
-}
 
 void main() {
-  // Using the classes and demonstrating features
-  Circle circle = Circle(5);
+  var circle = Circle(5);
   print('Circle Area: ${circle.area()}');
   print('Circle Diameter: ${circle.diameter}');
-  circle.diameter = 10;
+  print('Is Circle a Shape? ${circle is Shape}');
+
+
+  circle.diameter = 50;
   print('Updated Circle Radius: ${circle.radius}');
 
-  Rectangle rectangle = Rectangle(4, 6);
+
+  var circle2 = circle + Circle(8);
+  print('Circle2 Radius: ${circle2.radius}');
+  print('Circle2 Area: ${circle2.area()}');
+
+
+  var rectangle = Rectangle(4, 6);
   print('Rectangle Area: ${rectangle.area()}');
 
-  PositionedCircle pCircle = PositionedCircle(8, 2, 5);
+
+  var square = Square(5);
+  print('Is Square a Rectangle? ${square is Rectangle}');
+  print('Square Area: ${square.area()}');
+
+
+  var pCircle = PositionedCircle(8, 2, 5);
+
   print('Positioned Circle Area: ${pCircle.area()}');
   print('Positioned Circle Position: (${pCircle.x}, ${pCircle.y})');
+  print('Is Positioned Circle a Circle? ${pCircle is Circle}');
+  print('Is Positioned Circle Positioned? ${pCircle is Positioned}');
 
-  Vector v1 = Vector(3, 4);
-  Vector v2 = Vector(1, 2);
-  Vector sum = v1 + v2;
-  print('Vector Sum: (${sum.x}, ${sum.y})');
 
-  Box<int> intBox = Box(42);
-  print('Integer Box Value: ${intBox.value}');
+  var blob = Blob('Flubber', 5, 1);
+  print('Is Blob a Shape? ${blob is Shape}');
+  print('Is Blob Positioned? ${blob is Positioned}');
+  print('Distance between Circle and Blob: ${pCircle.distanceTo(blob)}');
 }
