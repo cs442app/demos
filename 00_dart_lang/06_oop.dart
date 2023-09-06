@@ -16,7 +16,7 @@ import 'dart:math';
 // Classes
 class Shape {
   double area() {
-    return 0;
+    return 0; // can we get rid of this definition?
   }
 }
 
@@ -25,7 +25,7 @@ class Shape {
 class Circle extends Shape {
   double radius;
 
-  // Constructors
+  // Constructor
   Circle(this.radius);
 
   // Getters and Setters
