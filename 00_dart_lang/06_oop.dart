@@ -7,7 +7,7 @@
  * - Inheritance
  * - Mixins
  * - Operator overloading
- * - Generics
+ * - Object identity, equality, and constant objects
  */
 
 import 'dart:math';
@@ -55,6 +55,7 @@ class Rectangle extends Shape {
 }
 
 class Square extends Rectangle {
+  // Constructor with initializer list
   Square(double side) : super(side, side);
 }
 
@@ -89,6 +90,24 @@ class Blob with Positioned {
 }
 
 
+// Object identity, equality, and constant objects
+class Foo {
+  final int x;
+  final int y;
+  
+  Foo(this.x, this.y); // try making this const
+
+  bool operator ==(Object other) {
+    if (other is Foo) {
+      return x == other.x && y == other.y;
+    }
+    return false;
+  }
+
+  int get hashCode => x.hashCode ^ y.hashCode;
+}
+
+
 void main() {
   var circle = Circle(5);
   print('Circle Area: ${circle.area()}');
@@ -110,6 +129,7 @@ void main() {
 
 
   var square = Square(5);
+  print('Is Square a Shape? ${square is Shape}');
   print('Is Square a Rectangle? ${square is Rectangle}');
   print('Square Area: ${square.area()}');
 
@@ -126,4 +146,13 @@ void main() {
   print('Is Blob a Shape? ${blob is Shape}');
   print('Is Blob Positioned? ${blob is Positioned}');
   print('Distance between Circle and Blob: ${pCircle.distanceTo(blob)}');
+
+
+  // how to make the following const objects? what does it mean?
+  var foo1 = Foo(5, 10);
+  var foo2 = Foo(5, 10);
+
+  print('foo1 == foo2? ${foo1 == foo2}');
+  print('foo1.hashCode == foo2.hashCode? ${foo1.hashCode == foo2.hashCode}');
+  print('foo1 identity == foo2 identity? ${identical(foo1, foo2)}');
 }
