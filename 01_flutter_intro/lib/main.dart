@@ -243,6 +243,7 @@ class App5 extends StatelessWidget {
       ),
     };
 
+    // can you spot the nested `Row` and `Column` widgets?
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Favorite Things'),
@@ -279,7 +280,7 @@ class App5 extends StatelessWidget {
 class FavoriteWidget extends StatelessWidget {
   final FavoriteItem item;
 
-  const FavoriteWidget({required this.item});
+  const FavoriteWidget({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -305,6 +306,7 @@ class FavoriteWidget extends StatelessWidget {
     );
   }
 
+  // a "Snackbar" is a Material widget that appears at the bottom of the screen
   void _showSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
