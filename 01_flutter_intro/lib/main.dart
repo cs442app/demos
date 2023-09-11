@@ -11,18 +11,17 @@
  *    - ElevatedButton
  *    - GestureDetector
  *    - Icon
- *    - ListView (and ListTile)
+ *    - ListView and ListTile
  *    - MaterialApp
  *    - Placeholder
+ *    - Row
  *    - SizedBox
  *    - Scaffold
  *    - Text
  * - Inherited widgets
  * - Stateless widgets
- * - Stateful widgets
  */
 
-import 'dart:math';
 import 'package:flutter/Material.dart';
 
 void main() {
@@ -176,12 +175,19 @@ class App4 extends StatelessWidget {
         }, 
       ),
       body: ListView(
-        children: ['Lions', 'Tigers', 'Bears', 'Oh my!'].map(
-          (str) => ListTile(
-            title: Text(str),
-            onTap: () => print('$str clicked'),
+        children: [
+          ListTile(
+            title: const Text('Hello World!'),
+            onTap: () => print('"Hello World!" clicked'),
+          ),
+          ...
+          ['Lions', 'Tigers', 'Bears', 'Oh my!'].map(
+            (str) => ListTile(
+              title: Text(str),
+              onTap: () => print('$str clicked'),
+            )
           )
-        ).toList()
+        ]
       ),
     );
   }
@@ -189,52 +195,128 @@ class App4 extends StatelessWidget {
 
 //*****************************************************************************
 
-// A stateful widget! Track down the superclass in the framework source code.
-class App5 extends StatefulWidget {
-  const App5({super.key});
+class FavoriteItem {
+  final String name;
+  final String description;
+  final String imagePath;
 
-  // note: we don't override `build` here
-  @override
-  State<App5> createState() => _App5State();
+  const FavoriteItem({
+    required this.name,
+    required this.description,
+    required this.imagePath,
+  });
 }
 
 
-// A state object! The state persists across tree rebuilds, and is bound to
-// its element in the tree. When the state changes, the widget is rebuilt.
-class _App5State extends State<App5> {
-  int _luckyNum = 0;
+class App5 extends StatelessWidget {
+  const App5({super.key});
 
-  _App5State() {
-    _luckyNum = Random().nextInt(100);
-  }
-
-  void _generateLuckyNum() {
-    // what happens if we remove the call to `setState`?
-    setState(() {
-      print('Generating lucky number...');
-      _luckyNum = Random().nextInt(100);
-    });
-  }
-
-  // try setting a breakpoint here and clicking the button
   @override
   Widget build(BuildContext context) {
+    const foods = {
+      FavoriteItem(
+        name: 'Pizza',
+        description: 'A delicious pie of cheese and sauce',
+        imagePath: 'assets/images/pizza.jpg'
+      ),
+      FavoriteItem(
+        name: 'Burger',
+        description: 'A juicy burger with all the fixings',
+        imagePath: 'assets/images/burger.jpg'
+      ),
+      FavoriteItem(
+        name: 'Ice Cream',
+        description: 'A sweet treat to cool you down',
+        imagePath: 'assets/images/ice_cream.jpg'
+      ),
+    };
+
+    const languages = {
+      FavoriteItem(
+        name: 'Haskell',
+        description: 'A purely functional programming language',
+        imagePath: 'assets/images/haskell.png'
+      ),
+      FavoriteItem(
+        name: 'Lisp',
+        description: 'Lots of irritating superfluous parentheses',
+        imagePath: 'assets/images/lisp.png'
+      ),
+      FavoriteItem(
+        name: 'Rust',
+        description: 'A systems programming language',
+        imagePath: 'assets/images/rust.png'
+      ),
+    };
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lucky number generator'),
+        title: const Text('My Favorite Things'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Text('Your lucky number is: $_luckyNum'),
-            ElevatedButton(
-              onPressed: _generateLuckyNum, 
-              child: const Text('Get my lucky number'),
-            )
-          ],
-        ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Foods', 
+            style: Theme.of(context).textTheme.headlineLarge
+          ),
+          const SizedBox(height: 15),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: foods.map((item) => FavoriteWidget(item: item)).toList(),
+          ),
+          const SizedBox(height: 30),
+          Text(
+            'Languages', 
+            style: Theme.of(context).textTheme.headlineLarge
+          ),
+          const SizedBox(height: 15),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: languages.map((item) => FavoriteWidget(item: item)).toList(),
+          ),
+        ],
+      )
+     );
+  }
+}
+
+
+class FavoriteWidget extends StatelessWidget {
+  final FavoriteItem item;
+
+  const FavoriteWidget({required this.item});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      child: Column(
+        children: [
+          GestureDetector(
+            child: Image.asset(
+              item.imagePath,
+              width: 100,
+              height: 100,
+            ),
+            onTap: () => _showSnackBar(context, item.description)
+          ),
+          const SizedBox(height: 8),
+          Text(
+            item.name,
+            style: Theme.of(context).textTheme.titleLarge,
+          )
+        ],
       ),
+    );
+  }
+
+  void _showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(milliseconds: 500),
+      )
     );
   }
 }
