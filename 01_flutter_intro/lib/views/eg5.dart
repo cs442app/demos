@@ -24,6 +24,12 @@ class App5 extends StatelessWidget {
             title: Text('Hello World!'),
             onTap: () => print('"Hello World!" clicked'),
           ),
+          ...['Lions', 'Tigers', 'Bears', 'Oh my!'].map(
+            (String str) => ListTile(
+              title: Text(str),
+              onTap: () => print('"$str" clicked'),
+            )
+          ).toList(),
         ]
       ),
     );
