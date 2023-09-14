@@ -1,3 +1,3 @@
-# flutter_intro
+# Introduction to Flutter
 
-A new Flutter project.
+Simple examples demonstrating the use of stateless widgets for basic layout.
