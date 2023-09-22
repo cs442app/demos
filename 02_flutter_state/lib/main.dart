@@ -23,7 +23,7 @@ void main() {
         title: const Text('State Management Demo'),
       ),
       body: const Center(
-        child: App6()
+        child: App1()
       )
     )
   ));
