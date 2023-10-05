@@ -1,84 +1,180 @@
-/// Example of a non-responsive app where:
-/// - the menu is always visible
-/// - the content area is always 3/4 of the screen width
+/// Demonstrates the use of Flexible and Expanded widgets,
+/// and how they interpret the "flex" property.
+
+// From the docs: 
+//
+// flex: The flex factor to use for this child. If null or zero, the child is
+// inflexible and determines its own size. If non-zero, the amount of space the
+// child's can occupy in the main axis is determined by dividing the free space 
+// (after placing the inflexible children) according to the flex factors of the
+// flexible children.
+//
+// Expanded: A widget that expands a child of a Row, Column, or Flex so that 
+// the child fills the available space.
+// 
+// Flexible: ... unlike Expanded, Flexible does not require the child to fill
+// the available space.
+
 
 import 'package:flutter/material.dart';
 
-class App1 extends StatefulWidget {
+class App1 extends StatelessWidget {
+  // try change the following two properties
+  final Axis direction       = Axis.vertical;
+  final List<int> flexValues = const [1, 1, 2];
+
+  get childDirection => direction == Axis.horizontal 
+                        ? Axis.vertical 
+                        : Axis.horizontal;
+
   const App1({super.key});
 
   @override
-  State<App1> createState() => _App1State();
-}
-
-class _App1State extends State<App1> {
-  int _selectedIndex = 0;
-  final List<String> _menuItems = <String>['Home', 'About', 'Settings'];
-
-  void _selectPage(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {      
+  Widget build(BuildContext context) {
     return Scaffold(
-      body: Row(
-        children: [
-          Expanded(
-            flex: 1, // 1/4 of the screen width
-            child: Menu(
-              items: _menuItems, 
-              selectedIndex: _selectedIndex,
-              onChange: _selectPage,
-            ),
-          ),
-          Expanded(
-            flex: 3, // 3/4 of the screen width
-            child: Container(
-              color: Colors.lightBlueAccent,
-              child: Center(
-                child: Text(
-                  _menuItems[_selectedIndex],
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-              ),
-            ),
-          ),
-        ],
-      )
+      body: Center(
+        child: Flex(
+          direction: direction,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            FlexibleChildren(childDirection, flexValues),
+            ExpandedChildren(childDirection, flexValues),
+            FlexibleAndExpandedChildren(childDirection, flexValues),
+          ],
+        )
+      ),
     );
   }
 }
 
 
-class Menu extends StatelessWidget {
-  final List<String> items;
-  final int? selectedIndex;
-  final void Function(int)? onChange;
+class FlexibleChildren extends StatelessWidget {
+  final Axis direction;
+  final List<int> flexValues;
 
-  const Menu({
-    required this.items,
-    this.selectedIndex, 
-    this.onChange,
-    super.key}
+  const FlexibleChildren(
+    this.direction, this.flexValues, 
+    {super.key}
   );
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: items.map(
-        (String item) {
-          return ListTile(
-            title: Text(item),
-            selected: items.indexOf(item) == selectedIndex,
-            onTap: () {
-              if (onChange != null) onChange!(items.indexOf(item));
-            },
-          );
-        },
-      ).toList(),
+    return Container(
+      color: Colors.red,
+      child: Flex(
+        direction: direction,
+        children: [
+          Flexible(
+            flex: flexValues[0],
+            child: Container(
+              color: Colors.blue,
+              child: const Text('Flexible'),
+            ),
+          ),
+          Flexible(
+            flex: flexValues[1],
+            child: Container(
+              color: Colors.green,
+              child: const Text('Flexible'),
+            ),
+          ),
+          Flexible(
+            flex: flexValues[2],
+            child: Container(
+              color: Colors.yellow,
+              child: const Text('Flexible'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+class ExpandedChildren extends StatelessWidget {
+  final Axis direction;
+  final List<int> flexValues;
+
+  const ExpandedChildren(
+    this.direction, this.flexValues,
+    {super.key}
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.red,
+      child: Flex(
+        direction: direction,
+        children: [
+          Expanded(
+            flex: flexValues[0],
+            child: Container(
+              color: Colors.blue,
+              child: const Text('Expanded'),
+            ),
+          ),
+          Expanded(
+            flex: flexValues[1],
+            child: Container(
+              color: Colors.green,
+              child: const Text('Expanded'),
+            ),
+          ),
+          Expanded(
+            flex: flexValues[2],
+            child: Container(
+              color: Colors.yellow,
+              child: const Text('Expanded'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+class FlexibleAndExpandedChildren extends StatelessWidget {
+  final Axis direction;
+  final List<int> flexValues;
+
+  const FlexibleAndExpandedChildren(
+    this.direction, this.flexValues,
+    {super.key}
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.red,
+      child: Flex(
+        direction: direction,
+        children: [
+          Flexible(
+            flex: flexValues[0],
+            child: Container(
+              color: Colors.blue,
+              child: const Text('Flexible'),
+            ),
+          ),
+          Expanded(
+            flex: flexValues[1],
+            child: Container(
+              color: Colors.green,
+              child: const Text('Expanded'),
+            ),
+          ),
+          Flexible(
+            flex: flexValues[2],
+            child: Container(
+              color: Colors.yellow,
+              child: const Text('Flexible'),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
