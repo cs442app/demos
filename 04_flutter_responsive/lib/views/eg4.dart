@@ -13,20 +13,17 @@ class App4 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'App 3',
-      home: ChangeNotifierProvider(
-        create: (context) => MacGuffinCollection(50),
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            if (constraints.maxWidth < 800) {
-              return const SingleLayout();
-            } else {
-              return const DoubleLayout();
-            }
+    return ChangeNotifierProvider(
+      create: (context) => MacGuffinCollection(50),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth < 800) {
+            return const SingleLayout();
+          } else {
+            return const DoubleLayout();
           }
-        )
-      ),
+        }
+      )
     );
   }
 }
