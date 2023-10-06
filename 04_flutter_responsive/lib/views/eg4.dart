@@ -1,175 +1,118 @@
-/// An app that implements the standard drill-down menu pattern, but
-/// adapts to the screen size by using different layouts. We use a
-/// `LayoutBuilder` to rebuild widgets when the screen size changes.
+/// Basic responsive layout with a dynamic drawer/menu, implemented using
+/// information obtained via `MediaQuery`.
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
-import '../models/macguffin.dart';
 
 
-class App4 extends StatelessWidget {
+class App4 extends StatefulWidget {
   const App4({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => MacGuffinCollection(50),
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          if (constraints.maxWidth < 800) {
-            return const SingleLayout();
-          } else {
-            return const DoubleLayout();
-          }
-        }
-      )
-    );
-  }
+  State<App4> createState() => _App4State();
 }
 
+class _App4State extends State<App4> {
+  int _selectedIndex = 0;
+  final List<String> _menuItems = <String>['Home', 'About', 'Settings'];
 
-// A narrow-screen layout that uses the navigation stack to show the list and
-// detail views on different pages.
-class SingleLayout extends StatelessWidget {
-  const SingleLayout({super.key});
+  void _selectPage(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    var macguffins = Provider.of<MacGuffinCollection>(context, listen: false);
+    var size = MediaQuery.sizeOf(context);
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('MacGuffins')),
-      body: MacGuffinsListPage(
-        onTapped: () async {
-          await Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => 
-                ChangeNotifierProvider<MacGuffinCollection>.value(
-                  value: macguffins,
-                  child: Scaffold(
-                    appBar: AppBar(title: const Text('Details')),
-                    body: const MacGuffinDetailPage()
-                  )
-              )
+    // only show the app bar and drawer if the screen is small
+    var appBar = size.width < 600
+        ? AppBar(
+            title: Text(_menuItems[_selectedIndex]),
+          )
+        : null;
+
+    var drawer = size.width < 600
+        ? Drawer(
+            child: Menu(
+              items: _menuItems, 
+              isDrawer: true,
+              selectedIndex: _selectedIndex,
+              onChange: _selectPage,
             )
-          );
+          )
+        : null;
 
-          macguffins.selectedIndex = null;
-        }
-      ),
-    );
-  }
-}
-
-
-// A wide-screen layout that uses a row to show the list and detail views
-// side-by-side.
-class DoubleLayout extends StatelessWidget {
-  const DoubleLayout({super.key});
-
-  @override
-  Widget build(BuildContext context) {
+    // show the menu if the screen is large
+    var menu = size.width > 600 
+        ? Expanded(
+            flex: 1, 
+            child: Menu(
+              items: _menuItems, 
+              selectedIndex: _selectedIndex,
+              onChange: _selectPage,
+            )
+          ) 
+        : Container();
+    
+    // build our responsive layout (what happens at width = 600?)
     return Scaffold(
-      appBar: null,
-      body: Row(
-        children: [
-          const Expanded(
-            flex: 1, // 1/4 of the screen width
-            child: MacGuffinsListPage(highlightSelected: true),
-          ),
-          Expanded(
-            flex: 3, // 3/4 of the screen width
-            child: Consumer<MacGuffinCollection>(
-              builder: (context, macGuffins, child) =>
-                const MacGuffinDetailPage()
-            ),
-          ),
-        ],
-      )
+        appBar: appBar,
+        drawer: drawer,
+        body: Row(
+          children: [
+            menu,
+            Expanded(
+              flex: 3,
+              child: Container(
+                color: Colors.lightBlueAccent,
+                child: Center(
+                  child: Text(
+                    '${size.width} x ${size.height}',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
     );
   }
 }
 
 
-// A widget that shows a list of MacGuffins, which can be used in both the
-// single and double layouts.
-class MacGuffinsListPage extends StatelessWidget {
-  final VoidCallback? onTapped;
-  final bool highlightSelected;
+/// A simple menu widget that can be used in a drawer or as a menu
+class Menu extends StatelessWidget {
+  final bool isDrawer;
+  final List<String> items;
+  final int? selectedIndex;
+  final void Function(int)? onChange;
 
-  const MacGuffinsListPage({
-    this.onTapped, 
-    this.highlightSelected = false,
-    super.key
-  });
+  const Menu({
+    required this.items,
+    this.selectedIndex, 
+    isDrawer,
+    this.onChange,
+    super.key}
+  ) : isDrawer = isDrawer ?? false;
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<MacGuffinCollection>(
-      builder: (context, macGuffins, child) => ListView.builder(
-        itemCount: macGuffins.length,
-        itemBuilder: (context, index) => Container(
-          color: highlightSelected && macGuffins.selectedIndex == index
-            ? Colors.lightBlueAccent
-            : null,
-          child: ListTile(
-            title: Text(macGuffins[index].name),
+    return ListView(
+      children: items.map(
+        (String item) {
+          return ListTile(
+            title: Text(item),
+            selected: items.indexOf(item) == selectedIndex,
             onTap: () {
-              macGuffins.selectedIndex = index;
-              if (onTapped != null) onTapped!();
+              if (isDrawer) Navigator.pop(context);
+
+              // following is brittle, but works for this example
+              if (onChange != null) onChange!(items.indexOf(item));
             },
-          ),
-        )
-      )
-    );
-  }
-}
-
-
-// A widget that shows the details of a selected MacGuffin, which can be used
-// in both the single and double layouts.
-class MacGuffinDetailPage extends StatelessWidget {
-  const MacGuffinDetailPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-
-    return Consumer<MacGuffinCollection>(
-      builder:(context, macguffins, child) {
-        var macguffin = macguffins.selectedIndex != null
-          ? macguffins[macguffins.selectedIndex!]
-          : null;
-
-        if (macguffin == null) {
-          return Center(
-            child: Text(
-              'No MacGuffin selected',
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
           );
-        } else {
-          var formatter = NumberFormat.currency(locale: 'en_US', symbol: '\$');
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  macguffin.name, 
-                  style: Theme.of(context).textTheme.titleLarge
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  formatter.format(macguffin.price),
-                  style: Theme.of(context).textTheme.titleLarge
-                ),
-                const SizedBox(height: 20),
-                Text(macguffin.description),
-              ],
-            ),
-          );
-        }
-      }
+        },
+      ).toList(),
     );
   }
 }

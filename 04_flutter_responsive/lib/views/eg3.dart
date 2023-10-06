@@ -1,124 +1,48 @@
-/// Basic responsive layout with a dynamic drawer/menu, implemented using
-/// information obtained via `MediaQuery`.
+/// Demonstrates the use of a MediaQuery to access device and platform data.
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'dart:io' show Platform;
 
-class App3 extends StatefulWidget {
+
+class App3 extends StatelessWidget {
   const App3({super.key});
 
   @override
-  State<App3> createState() => _App3State();
-}
-
-class _App3State extends State<App3> {
-  int _selectedIndex = 0;
-  final List<String> _menuItems = <String>['Home', 'About', 'Settings'];
-
-  void _selectPage(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    // Get the size of the screen with a MediaQuery.
-    var media = MediaQuery.of(context);
-
     // Note: accessing the MediaQuery object (via the InheritedWidget ".of"
     // mechanism) establishes a dependency on it, which will cause Flutter to 
-    // rebuild the widget whenever any of the MediaQuery properties change.
+    // rebuild this widget whenever any of the MediaQuery properties change.
     // It is more efficient to access specific MediaQuery properties through
     // methods like `sizeOf` and `orientationOf`.
+    var mq = MediaQuery.of(context);
 
-    // only show the app bar and drawer if the screen is small
-    var appBar = media.size.width < 600
-        ? AppBar(
-            title: Text(_menuItems[_selectedIndex]),
-          )
-        : null;
+    // Device and platform data
+    var deviceData = <String, String>{
+      'Dimensions': '${mq.size.width} x ${mq.size.height}',
+      'Density': mq.devicePixelRatio.toString(),
+      'Orientation': mq.orientation == Orientation.portrait 
+                     ? 'Portrait' : 'Landscape',
+      'Platform': kIsWeb ? 'Web' : Platform.operatingSystem,
+      'Light/Dark Mode': mq.platformBrightness == Brightness.dark 
+                         ? 'Dark Mode' : 'Light Mode',
+    };
 
-    var drawer = media.size.width < 600
-        ? Drawer(
-            child: Menu(
-              items: _menuItems, 
-              isDrawer: true,
-              selectedIndex: _selectedIndex,
-              onChange: _selectPage,
-            )
-          )
-        : null;
-
-    // show the menu if the screen is large
-    var menu = media.size.width > 600 
-        ? Expanded(
-            flex: 1, 
-            child: Menu(
-              items: _menuItems, 
-              selectedIndex: _selectedIndex,
-              onChange: _selectPage,
-            )
-          ) 
-        : Container();
-    
-    // build our responsive layout (what happens at width = 600?)
     return Scaffold(
-        appBar: appBar,
-        drawer: drawer,
-        body: Row(
-          children: [
-            menu,
-            Expanded(
-              flex: 3,
-              child: Container(
-                color: Colors.lightBlueAccent,
-                child: Center(
-                  child: Text(
-                    '${media.size.width} x ${media.size.height}',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
-    );
-  }
-}
-
-
-/// A simple menu widget that can be used in a drawer or as a menu
-class Menu extends StatelessWidget {
-  final bool isDrawer;
-  final List<String> items;
-  final int? selectedIndex;
-  final void Function(int)? onChange;
-
-  const Menu({
-    required this.items,
-    this.selectedIndex, 
-    isDrawer,
-    this.onChange,
-    super.key}
-  ) : isDrawer = isDrawer ?? false;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      children: items.map(
-        (String item) {
+      appBar: AppBar(
+        title: const Text('Device and Platform Data'),
+      ),
+      body: ListView.builder(
+        itemCount: deviceData.length,
+        itemBuilder: (context, index) {
+          final key = deviceData.keys.elementAt(index);
+          final value = deviceData[key];
           return ListTile(
-            title: Text(item),
-            selected: items.indexOf(item) == selectedIndex,
-            onTap: () {
-              if (isDrawer) Navigator.pop(context);
-
-              // following is brittle, but works for this example
-              if (onChange != null) onChange!(items.indexOf(item));
-            },
+            title: Text(key),
+            subtitle: Text(value.toString()),
           );
         },
-      ).toList(),
+      )
     );
   }
 }
