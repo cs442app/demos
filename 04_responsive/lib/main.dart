@@ -2,9 +2,9 @@
 import 'package:flutter/material.dart';
 import 'views/eg1.dart';
 import 'views/eg2.dart';
+import 'views/eg3.dart';
 import 'views/eg4.dart';
 import 'views/eg5.dart';
-import 'views/eg3.dart';
 
 void main() {
   runApp(const MainApp());
@@ -17,7 +17,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: App1(),
+      home: App5(),
     );
   }
 }
