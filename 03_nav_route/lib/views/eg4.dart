@@ -48,14 +48,9 @@ class App4 extends StatelessWidget {
 }
 
 
-class MacGuffinsListPage extends StatefulWidget {
+class MacGuffinsListPage extends StatelessWidget {
   const MacGuffinsListPage({super.key});
 
-  @override
-  State<MacGuffinsListPage> createState() => _MacGuffinsListPageState();
-}
-
-class _MacGuffinsListPageState extends State<MacGuffinsListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,8 +75,8 @@ class _MacGuffinsListPageState extends State<MacGuffinsListPage> {
                       return ChangeNotifierProvider<MacGuffinCollection>.value(
                         value: collection, 
 
-                        // new route inherits the collection, so we don't 
-                        // pass it a MacGuffin explicitly
+                        // new route inherits the collection, so we don't have
+                        // to pass it the MacGuffin object, just the index
                         child: MacGuffinEditPage(index));
                     }
                   )
@@ -113,6 +108,8 @@ class _MacGuffinEditPageState extends State<MacGuffinEditPage> {
     super.initState();
     // grab the collection and the MacGuffin we're editing from the context
     _collection = Provider.of<MacGuffinCollection>(context, listen: false);
+
+    // make a copy of the one we're editing so we can cancel/commit changes
     _editedMacGuffin = MacGuffin.from(_collection[widget.index]);
   }
 
