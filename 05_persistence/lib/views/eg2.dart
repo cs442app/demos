@@ -40,6 +40,10 @@ class _FilePersistenceDemoState extends State<FilePersistenceDemo> {
     // get the path to the app's directory -- note that this is established
     // by the OS/platform, so it's not something we can decide
     final directory = await getApplicationDocumentsDirectory();
+
+    // let's pretend this takes a while ...
+    await Future.delayed(const Duration(seconds: 2));
+
     setState(() {
       _filePath = '${directory.path}/text_file.txt';
       print(_filePath);
@@ -53,6 +57,9 @@ class _FilePersistenceDemoState extends State<FilePersistenceDemo> {
     if (!file.existsSync()) return;
 
     final text = await file.readAsString(); // reads entire file as a string
+
+    // let's pretend this takes a while ...
+    await Future.delayed(const Duration(seconds: 1));
 
     _controller.text = text;
   }
