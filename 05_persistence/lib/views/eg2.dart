@@ -37,6 +37,8 @@ class _FilePersistenceDemoState extends State<FilePersistenceDemo> {
   }
 
   Future<void> _getFilePath() async {
+    // get the path to the app's directory -- note that this is established
+    // by the OS/platform, so it's not something we can decide
     final directory = await getApplicationDocumentsDirectory();
     setState(() {
       _filePath = '${directory.path}/text_file.txt';
@@ -47,9 +49,10 @@ class _FilePersistenceDemoState extends State<FilePersistenceDemo> {
   Future<void> _loadFromFile() async {
     final file = File(_filePath!);
 
+    // skip if the file doesn't exist
     if (!file.existsSync()) return;
 
-    final text = await file.readAsString();
+    final text = await file.readAsString(); // reads entire file as a string
 
     _controller.text = text;
   }
@@ -64,7 +67,7 @@ class _FilePersistenceDemoState extends State<FilePersistenceDemo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Text File Saver'),
+        title: const Text('Simple Notepad'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(32.0),
@@ -87,7 +90,7 @@ class _FilePersistenceDemoState extends State<FilePersistenceDemo> {
                       ? null
                       : () async {
                           await _saveToFile();
-                          if (!context.mounted) return;
+                          if (!context.mounted) return; // async safety check
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text('Text saved to file!'),

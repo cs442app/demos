@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+// define a model class this time
 class Person {
   final String name;
   final int age;
@@ -19,6 +20,7 @@ class Person {
     required this.address,
   });
 
+  // know how to load ourself from JSON
   factory Person.fromJson(Map<String,dynamic> json) {
     return Person(
       name: json['name'] as String,
@@ -33,6 +35,7 @@ class Person {
 class App4 extends StatelessWidget {
   const App4({super.key});
 
+  // load the data from the asset file (asynchronously)
   Future<Person> _loadData(BuildContext context) async {
     final data = await DefaultAssetBundle.of(context)
       .loadString('assets/data.json');
@@ -46,6 +49,9 @@ class App4 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // wrap the widget tree in a FutureProvider, which will provide
+      // the data to any child widgets that request it (after the future
+      // completes)
       home: FutureProvider<Person?>(
         create: (context) => _loadData(context),
         initialData: null,
@@ -61,6 +67,8 @@ class PersonView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // get the data from the provider --- it may be null if the future
+    // hasn't completed yet
     final person = Provider.of<Person?>(context);
 
     if (person == null) {

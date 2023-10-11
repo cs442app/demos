@@ -26,6 +26,8 @@ class SharedPrefsDemo extends StatefulWidget {
 
 class _SharedPrefsDemoState extends State<SharedPrefsDemo> {
   int _counter = 0;
+
+  // needed to control the text field (e.g., change its displayed text)
   final TextEditingController _messageController = TextEditingController();
   
 
@@ -38,6 +40,7 @@ class _SharedPrefsDemoState extends State<SharedPrefsDemo> {
     });
   }
 
+  // load data from shared preferences (asynchronously)
   Future<void> _loadData() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {

@@ -35,12 +35,17 @@ class _JSONAssetDemoState extends State<JSONAssetDemo> {
   }
 
   Future<Map<String,dynamic>> _loadData() async {
+    // Load the JSON data from the asset file -- note that this is
+    // read-only, as we can't write to the asset bundle.
+    // (How might we handle updates to the data?)
     final data = await DefaultAssetBundle.of(context)
       .loadString('assets/data.json');
 
     // let's pretend this takes a while ...  
     await Future.delayed(const Duration(seconds: 2));
 
+    // the JSON decoder returns a dynamic type -- this "shapes" it into
+    // a Map of Strings to objects
     return Map<String,dynamic>.from(json.decode(data));
   }
 
@@ -48,8 +53,9 @@ class _JSONAssetDemoState extends State<JSONAssetDemo> {
   Widget build(BuildContext context) {
     return FutureBuilder<Map<String,dynamic>>(
       future: _data,
-      initialData: const {},
       builder: (context, snapshot) {
+        // `snapshot` represents the current state of our future
+        // --- we can check to see if it's done, if it has data, etc.
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
             body: Center(
@@ -59,6 +65,7 @@ class _JSONAssetDemoState extends State<JSONAssetDemo> {
         } else {
           return Scaffold(
             body: ListView.builder(
+              // `snapshot.data` is the data returned by the future
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 final key = snapshot.data!.keys.elementAt(index);
