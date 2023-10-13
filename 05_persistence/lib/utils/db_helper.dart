@@ -31,6 +31,8 @@ class DBHelper {
     // path.join joins two paths together, and is platform aware
     var dbPath = path.join(dbDir, _databaseName);
 
+    print(dbPath);
+
     // await deleteDatabase(dbPath); // nuke the database (for testing)
 
     // open the database

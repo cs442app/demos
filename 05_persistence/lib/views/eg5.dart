@@ -69,8 +69,9 @@ class _PersonListState extends State<PersonList> {
             email: '${WordGenerator().randomNoun()}@example.com',
           );
           await person.dbSave();
-          people.add(person);
-          setState(() {});
+          setState(() {
+            people.add(person);
+          });
         },
         child: const Icon(Icons.add),
       ),
