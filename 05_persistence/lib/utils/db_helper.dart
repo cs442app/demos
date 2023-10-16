@@ -1,4 +1,5 @@
 import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 // DBHelper is a Singleton class (only one instance)
@@ -26,10 +27,10 @@ class DBHelper {
   Future<Database> _initDatabase() async {
     // where should databases live? this is platform specific;
     // on iOS, it is the Documents directory
-    var dbDir = await getDatabasesPath();
+    var dbDir = await getLibraryDirectory();
 
     // path.join joins two paths together, and is platform aware
-    var dbPath = path.join(dbDir, _databaseName);
+    var dbPath = path.join(dbDir.path, _databaseName);
 
     print(dbPath);
 
