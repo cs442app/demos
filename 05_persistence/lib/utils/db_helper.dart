@@ -25,9 +25,8 @@ class DBHelper {
   }
 
   Future<Database> _initDatabase() async {
-    // where should databases live? this is platform specific;
-    // on iOS, it is the Documents directory
-    var dbDir = await getLibraryDirectory();
+    // use path_provider to get the platform-dependent documents directory
+    var dbDir = await getApplicationDocumentsDirectory();
 
     // path.join joins two paths together, and is platform aware
     var dbPath = path.join(dbDir.path, _databaseName);
