@@ -73,7 +73,8 @@ def add_post():
     cursor.execute('INSERT INTO posts (title,content,user_id) VALUES (?,?,?)', 
                    (title, content, user_id))
     db.commit()
-    return jsonify({'message': 'Post added successfully'})
+    return jsonify({ 'message': 'Post added successfully',
+                     "id": cursor.lastrowid })
 
 
 @app.route('/posts/<int:id>', methods=['DELETE'])
@@ -137,6 +138,34 @@ def list_users():
     cursor.execute('SELECT * FROM users')
     users = cursor.fetchall()
     return jsonify([{ "id": u[0], "username": u[1] } for u in users ])
+
+
+@app.route('/users/<username>', methods=['DELETE'])
+@login_required
+def delete_user(username):
+    # check to make sure that the user is deleting their own account
+    user_id = session['user_id']
+
+    print(username)
+    cursor.execute('SELECT * FROM users WHERE username = ?', (username,))
+    user = cursor.fetchone()
+
+    if not user:
+        abort(404)
+
+    if user[0] != user_id:
+        abort(403)
+
+    # delete all posts belonging to this user
+    cursor.execute('DELETE FROM posts WHERE user_id = ?', (user_id,))
+
+    # delete the user
+    cursor.execute('DELETE FROM users WHERE username = ?', (username,))
+    db.commit()
+
+    session.pop('user_id', None)
+
+    return json.dumps({'success': True})
 
 
 @app.route('/logout')
