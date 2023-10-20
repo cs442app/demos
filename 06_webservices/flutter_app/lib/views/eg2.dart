@@ -22,7 +22,7 @@ class App2 extends StatelessWidget {
 
 // Displays a list of posts from a web service.
 class MichaelsList extends StatefulWidget {
-  final String baseUrl = 'http://localhost:5001';
+  final String baseUrl = 'http://localhost:5001/posts';
 
   const MichaelsList({super.key});
 
@@ -40,7 +40,7 @@ class _MichaelsListState extends State<MichaelsList> {
   }
 
   Future<List<dynamic>> _loadPosts() async {
-    final response = await http.get(Uri.parse('${widget.baseUrl}/posts'));
+    final response = await http.get(Uri.parse(widget.baseUrl));
     final posts = json.decode(response.body);
     return posts;
   }
@@ -53,7 +53,7 @@ class _MichaelsListState extends State<MichaelsList> {
 
   Future<void> _addPost() async {
     // POST request to /posts to create a new post
-    await http.post(Uri.parse('${widget.baseUrl}/posts'), 
+    await http.post(Uri.parse(widget.baseUrl), 
       // we'll be sending JSON data
       headers: {'Content-Type': 'application/json'},
 
@@ -80,7 +80,7 @@ class _MichaelsListState extends State<MichaelsList> {
 
   Future<void> _deletePost(int id) async {
     // DELETE request to /post/:id to delete a post
-    await http.delete(Uri.parse('${widget.baseUrl}/post/$id'));
+    await http.delete(Uri.parse('${widget.baseUrl}/$id'));
     _refreshPosts();
   }
 
@@ -147,7 +147,7 @@ class _MichaelsListState extends State<MichaelsList> {
 
 // Allows the user to edit a post.
 class PostEditor extends StatefulWidget {
-  final String baseUrl = 'http://localhost:5001/post';
+  final String baseUrl = 'http://localhost:5001/posts';
   final Map<String, dynamic> post;
 
   const PostEditor({required this.post, super.key});
