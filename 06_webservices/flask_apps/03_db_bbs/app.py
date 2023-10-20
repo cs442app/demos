@@ -50,14 +50,16 @@ def login_required(func):
 
 
 @app.route('/posts')
-def get_posts():
+def list_posts():
     cursor.execute('''
         SELECT posts.id, posts.title, posts.content, users.username
         FROM posts
         INNER JOIN users ON posts.user_id = users.id
     ''')
     posts = cursor.fetchall()
-    return jsonify({'posts': posts})
+    return jsonify([{ "id": p[0], "title": p[1], 
+                      "content": p[2], "author": p[3] }
+                    for p in posts ])
 
 
 @app.route('/posts', methods=['POST'])
@@ -101,10 +103,15 @@ def register():
         username = data.get('username')
         password = data.get('password')
 
-        cursor.execute('INSERT INTO users (username, password) VALUES (?, ?)',
-                        (username, password))
-        db.commit()
-        return jsonify({'message': 'User created successfully'})
+        try:
+            cursor.execute('INSERT INTO users (username,password) VALUES (?,?)',
+                            (username, password))
+            db.commit()
+            user_id = cursor.lastrowid
+            session['user_id'] = user_id
+            return jsonify({'message': f'User created successfully'})
+        except sqlite3.Error as e:
+            abort(409)
     
 
 @app.route('/login', methods=['POST'])
@@ -123,6 +130,13 @@ def login():
         return jsonify({'message': 'Login successful'})
     else:
         abort(401)
+
+
+@app.route('/users')
+def list_users():
+    cursor.execute('SELECT * FROM users')
+    users = cursor.fetchall()
+    return jsonify([{ "id": u[0], "username": u[1] } for u in users ])
 
 
 @app.route('/logout')
@@ -144,6 +158,11 @@ def forbidden(error):
 @app.errorhandler(404)
 def not_found(error):
     return jsonify({'error': 'Not Found'}), 404
+
+
+@app.errorhandler(409)
+def not_found(error):
+    return jsonify({'error': 'Conflict'}), 404
 
 
 HOSTNAME='0.0.0.0'
