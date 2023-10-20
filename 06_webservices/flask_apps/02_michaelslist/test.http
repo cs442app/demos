@@ -1,0 +1,46 @@
+GET http://localhost:5001/posts
+
+###
+
+GET http://localhost:5001/
+
+###
+
+POST http://localhost:5001/posts
+content-type: application/json
+
+{
+    "title": "A car",
+    "description": "A car for sale!",
+    "author": "Michael"
+}
+
+###
+
+POST http://localhost:5001/posts
+content-type: application/json
+
+{
+    "title": "An exercise bike",
+    "description": "An old, used exercise bike",
+    "author": "Jane"
+}
+
+###
+
+GET http://localhost:5001/posts/10001
+
+###
+
+PUT http://localhost:5001/posts/10000
+content-type: application/json
+
+{
+    "title": "A new car",
+    "description": "A brand new car for sale!",
+    "author": "Frank"
+}
+
+###
+
+DELETE http://localhost:5001/posts/10000

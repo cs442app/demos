@@ -1,0 +1,53 @@
+GET http://localhost:5001/posts
+
+###
+
+@username = michael
+@password = abc123
+
+POST http://localhost:5001/register
+Content-Type: application/json
+
+{
+    "username": "{{username}}",
+    "password": "{{password}}"
+}
+
+###
+
+POST http://localhost:5001/login
+Content-Type: application/json
+
+{
+    "username": "{{username}}",
+    "password": "{{password}}"
+}
+
+###
+
+GET http://localhost:5001/logout
+
+###
+
+# @name createPost
+POST http://localhost:5001/posts
+Content-type: application/json
+
+{
+    "title": "A car",
+    "content": "A car for sale!"
+}
+
+###
+
+@postId = {{createPost.response.body.$.id}}
+
+DELETE http://localhost:5001/posts/{{postId}}
+
+###
+
+GET http://localhost:5001/users
+
+###
+
+DELETE http://localhost:5001/users/{{username}}
