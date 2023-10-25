@@ -50,8 +50,11 @@ function sendMessage() {
     const messageInput = document.getElementById('message');
     const messageText = messageInput.value.trim();
 
+    const usernameInput = document.getElementById('username');
+    const username = usernameInput.value.trim();
+
     if (messageText !== '') {
-        const sender = 'anonymous'; // Hardcoded username
+        const sender = username || 'anonymous';
         const timestamp = new Date();
 
         addDoc(messagesRef, {
