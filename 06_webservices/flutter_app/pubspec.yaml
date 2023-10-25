@@ -1,5 +1,5 @@
-name: flutter_application_1
-description: A new Flutter project.
+name: cs442_webapp_demos
+description: CS 442 sample web/cloud applications
 publish_to: 'none'
 version: 0.1.0
 
@@ -7,9 +7,13 @@ environment:
   sdk: '>=3.1.3 <4.0.0'
 
 dependencies:
+  cloud_firestore: ^4.12.0
+  firebase_auth: ^4.12.0
+  firebase_core: ^2.20.0
   flutter:
     sdk: flutter
   http: ^1.1.0
+  provider: ^6.0.5
   shared_preferences: ^2.2.2
   word_generator: ^0.4.3
 
