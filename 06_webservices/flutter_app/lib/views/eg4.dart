@@ -1,5 +1,9 @@
+/// Demonstrates:
+/// - Consuming a simple third-party REST API
+
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class App4 extends StatelessWidget {
   const App4({super.key});
@@ -7,192 +11,94 @@ class App4 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      title: 'Chat App',
       debugShowCheckedModeBanner: false,
-      home: MessageList(),
+      title: 'App5',
+      home: NewsClient(),
     );
   }
 }
 
-
-class MessageList extends StatefulWidget {
-  const MessageList({super.key});
-
-  @override
-  State createState() => _MessageListState();
-}
-
-
-class _MessageListState extends State<MessageList> {
-  String _name = 'anonymous';
-
-  // A reference to the cloud firestore
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
-  final TextEditingController _messageController = TextEditingController();
-  final ScrollController _scrollController = ScrollController();
-
-
-  // Add a message to the cloud firestore
-  void _sendMessage() {
-    _firestore.collection('messages').add({
-      'text': _messageController.text,
-      'sender': _name,
-      'timestamp': FieldValue.serverTimestamp(),
-    });
-    _messageController.clear();
-  }
-
-
-  // Delete all messages from the cloud firestore
-  Future<void> _deleteAllMessages() async {
-    final snapshot = await _firestore.collection('messages').get();
-    for (final doc in snapshot.docs) {
-      await doc.reference.delete();
-    }
-  }
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Firebase Chat'),
-        actions: [
-          // An action to open a new screen to change the name
-          IconButton(
-            onPressed: () async {
-              final name = await Navigator.of(context).push<String>(
-                MaterialPageRoute(builder: (context) => const NameEditor()),
-              );
-              _name = name ?? _name;
-            },
-            icon: const Icon(Icons.person),
-          ),
-
-          // An action to delete all messages
-          IconButton(
-            onPressed: () => _deleteAllMessages(),
-            icon: const Icon(Icons.delete),
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          // StreamBuilder is a widget that builds itself based on the latest
-          // snapshot of interaction with a specified asynchronous data source.
-          StreamBuilder<QuerySnapshot>(
-            stream: _firestore
-              .collection('messages')
-              .orderBy('timestamp', descending: true)
-              .limit(50)
-              .snapshots(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return const CircularProgressIndicator();
-              }
-
-              final data = snapshot.data!.docs.reversed.map(
-                (DocumentSnapshot doc) =>  doc.data() as Map<String, dynamic>
-              ).toList();
-              
-              var listView = ListView.builder(
-                controller: _scrollController,
-                itemCount: data.length,
-                itemBuilder: (context, index) => ListTile(
-                  title: Text(data[index]['text']),
-                  trailing: Text(
-                    data[index]['sender'],
-                    style: const TextStyle(color: Colors.grey)
-                  )
-                )
-              );
-
-              // Run this after the widget tree has been built
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                // Scroll to the bottom of the list view
-                _scrollController.animateTo(
-                  _scrollController.position.maxScrollExtent,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeOut,
-                );
-              });
-
-              return Expanded(child: listView);
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: SizedBox(
-                    height: 50,
-                    child: TextField(
-                      controller: _messageController,
-                      onSubmitted: (_) => _sendMessage(),
-                      decoration: const InputDecoration(
-                        hintText: 'Enter your message...',
-                        border: InputBorder.none
-                      ),
-                    ),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () => _sendMessage(),
-                  child: const Text('Send'),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-
-class NameEditor extends StatefulWidget {
-  const NameEditor({super.key});
-
-  @override
-  State createState() => _NameEditorState();
-}
-
-
-class _NameEditorState extends State<NameEditor> {
-  final TextEditingController _nameController = TextEditingController();
-
-  void _saveName() {
-    Navigator.pop(context, _nameController.text);
-  }
+// Displays recent news from the News API REST service
+class NewsClient extends StatefulWidget {
+  final String url = 'https://newsapi.org/v2/top-headlines?country=us';
+  final String apiKey = '5c345cb63a3c4046a363977eaff43011';
   
+  const NewsClient({super.key});
+
+  @override
+  State createState() => _NewsClientState();
+}
+
+
+class _NewsClientState extends State<NewsClient> {
+  Future<List<dynamic>>? futureArticles;
+
+  @override
+  void initState() {
+    super.initState();
+    futureArticles = _loadPosts();
+  }
+
+  Future<List<dynamic>> _loadPosts() async {
+    final response = await http.get(
+      Uri.parse('${widget.url}&apiKey=${widget.apiKey}'));
+    final posts = json.decode(response.body);
+
+    if (posts['status'] != 'ok') {
+      throw Exception('Failed to load posts: ${posts['message']}');
+    }
+
+    return posts['articles'];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Change Name'),
+        title: const Text('News Client'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _nameController,
-              onSubmitted: (_) => _saveName(),
-              decoration: const InputDecoration(
-                labelText: 'Name',
-              ),
-            ),
-            TextButton(
-              onPressed: () => _saveName(),
-              child: const Text('Save'),
-            ),
-          ],
-        ),
+      body: FutureBuilder<List<dynamic>>(
+        future: futureArticles,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return ListView.builder(
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                final article = snapshot.data![index];
+                return ListTile(
+                  title: Text(
+                    article['title'],
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 8),
+                      Text(article['description']),
+                      const SizedBox(height: 8),
+                      Text(
+                        article['author'] ?? 'Unknown',
+                        style: const TextStyle(color: Colors.grey),
+                      ),
+                      const Divider(),
+                    ],
+                  )
+
+                );
+              },
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('${snapshot.error}'),
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
       ),
     );
   }
-
 
 }
