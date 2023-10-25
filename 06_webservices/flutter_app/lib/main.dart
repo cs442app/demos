@@ -8,6 +8,7 @@ import 'views/eg2.dart';
 import 'views/eg3.dart';
 import 'views/eg4.dart';
 import 'views/eg5.dart';
+import 'views/eg6.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
