@@ -37,7 +37,7 @@ class TTTBoard extends StatelessWidget {
                   child: Icon(
                     switch (model[(row, col)]) {
                       Player.X => Icons.close,
-                      Player.O => Icons.circle,
+                      Player.O => Icons.circle_outlined,
                       _ => null,
                     },
                   ),

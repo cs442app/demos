@@ -20,7 +20,7 @@ void main() {
       }
 
       expect(find.byIcon(Icons.close), findsNWidgets(2));
-      expect(find.byIcon(Icons.circle), findsNWidgets(2));
+      expect(find.byIcon(Icons.circle_outlined), findsNWidgets(2));
     });
 
     testWidgets('Invalid (repeat) move', (tester) async {

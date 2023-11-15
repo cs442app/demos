@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:testing_demo/models/ttt.dart';
 import 'package:testing_demo/views/ttt_board.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
+
+
+// generate a mock class for TTTModel
+@GenerateMocks([TTTModel])
+import 'ttt_board_test.mocks.dart';
 
 
 Widget createBoard({
@@ -50,7 +57,8 @@ void main() {
     });
   });
 
-  group('Testing board with moves', () {
+
+  group('Testing board with real model object', () {
     testWidgets('Check first play', (tester) async {
       for (var r=0; r<3; r++) {
         for (var c=0; c<3; c++) {
@@ -73,9 +81,51 @@ void main() {
           model.playAt(r, c);
           await tester.pumpWidget(createBoard(model: model));
           expect(find.byIcon(Icons.close), findsOneWidget);
-          expect(find.byIcon(Icons.circle), findsOneWidget);
+          expect(find.byIcon(Icons.circle_outlined), findsOneWidget);
         }
       }
     });   
+  });
+
+
+
+  group('Testing board with mock model object', () {
+    testWidgets('All Xs', (tester) async {
+      var model = MockTTTModel();
+      
+      when(model[any]).thenReturn(Player.X);
+      when(model.playable(any, any)).thenReturn(false);
+
+      await tester.pumpWidget(createBoard(model: model));
+      expect(find.byIcon(Icons.close), findsNWidgets(9));
+    });
+
+    testWidgets('All Os', (tester) async {
+      var model = MockTTTModel();
+
+      when(model[any]).thenReturn(Player.O);
+      when(model.playable(any, any)).thenReturn(false);
+
+      await tester.pumpWidget(createBoard(model: model));
+      expect(find.byIcon(Icons.circle_outlined), findsNWidgets(9));
+    });
+
+    testWidgets('Xs and Os', (tester) async {
+      var model = MockTTTModel();
+
+      for (var r=0; r<3; r++) {
+        for (var c=0; c<3; c++) {
+          if ((r*3+c) % 2 == 0) {
+            when(model[(r, c)]).thenReturn(Player.X);
+          } else {
+            when(model[(r, c)]).thenReturn(Player.O);
+          }
+        }
+      }
+
+      await tester.pumpWidget(createBoard(model: model));
+      expect(find.byIcon(Icons.close), findsNWidgets(5));
+      expect(find.byIcon(Icons.circle_outlined), findsNWidgets(4));
+    });
   });
 }
