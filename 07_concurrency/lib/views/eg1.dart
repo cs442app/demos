@@ -56,17 +56,17 @@ Future<void> incrementCounter2() async {
                     onPressed:() => setState(() => counter = 0),
                     child: const Text('Reset')
                   ),
-ElevatedButton(
-  onPressed: () async {
-    counter = 0;
-    await Future.wait([
-      incrementCounter2(),
-      incrementCounter2(),
-    ]);
-    setState(() { });
-  }, 
-  child: const Text('Increment #2')
-),
+                  ElevatedButton(
+                    onPressed: () async {
+                      counter = 0;
+                      await Future.wait([
+                        incrementCounter2(),
+                        incrementCounter2(),
+                      ]);
+                      setState(() { });
+                    }, 
+                    child: const Text('Increment #2')
+                  ),
                 ],
               )
             ]

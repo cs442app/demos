@@ -74,7 +74,6 @@ class _App2State extends State<App2> {
                   ElevatedButton(
                     onPressed: () {
                       setState(() => isTaskRunning = true);
-                      isTaskRunning = true;
                       longDelay(3).then(
                         (_) => setState(() {
                           isTaskRunning = false;
@@ -102,7 +101,6 @@ class _App2State extends State<App2> {
                   ElevatedButton(
                     onPressed: () {
                       setState(() => isTaskRunning = true);
-                      isTaskRunning = true;
                       longComputation(1000000000).then(
                         (value) => setState(() {
                           taskResult = value;
