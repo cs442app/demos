@@ -1,22 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:provider/provider.dart';
-import 'package:testing_demo/models/favorites.dart';
 import 'package:testing_demo/views/fav_home.dart';
-
-class TestingApp extends StatelessWidget {
-  const TestingApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider<Favorites>(
-      create: (context) => Favorites(),
-      child: const MaterialApp(
-        home: HomePage(),
-      ),
-    );
-  }
-}
 
 void main() {
   group('Testing App', () {
