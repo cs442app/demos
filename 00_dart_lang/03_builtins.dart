@@ -58,13 +58,13 @@ void strings() {
 }
 
 /*****************************************************************************/
-
+//records-tuples-ordered collection of values,can have duplicates, used for finite set of values mostly. values  can be modified(mutable)
 void records() {
   (double,double) point1 = (3.14, 2.71);
 
-  (double x, double y) point2 = (3, 2);
+  (double x, double y) point2 = (3, 2); //no use of x and y here, as they are not actually named to elements
 
-  ({double x, double y}) point3 = (x: 3, y: 2);
+  ({double x, double y}) point3 = (x: 3, y: 2); //this is how elements can be named/labeled
 
   ({double w, double z}) point4 = (w: 4, z: 3);
 
@@ -72,10 +72,11 @@ void records() {
 
   print(point1.runtimeType);
   print('point.x = ${point1.$1}, point.y = ${point1.$2}');
+  //For record alone, element index starts from 1 
 
   print(point2.runtimeType);
   print('point2.x = ${point2.$1}, point2.y = ${point2.$2}');
-  // print('point2.x = ${point2.x}, point2.y = ${point2.y}');
+  // print('point2.x = ${point2.x}, point2.y = ${point2.y}'); //Error - as they are not actually named as x and y
 
   point1 = point2;
   print('point2.x = ${point2.$1}, point2.y = ${point2.$2}');
@@ -83,8 +84,12 @@ void records() {
   print(point3.runtimeType);
   print('point3.x = ${point3.x}, point3.y = ${point3.y}');
 
-  // point1 = point3; // how to fix this?
+//Cannot equate named and unnamed records
+  // point1 = point3; // how to fix this?  
   // point3 = point4; // how to fix this?
+
+  //fix it by explicitly assigning the elements separately or like creating a new record
+  point1 = (point3.x,point3.y);
 
   print(point5.runtimeType);
   print('${point5.$1}: point5.x = ${point5.x}, point5.y = ${point5.y}');
@@ -102,6 +107,7 @@ void collections() {
   print('List length: ${colors.length}');
 
   // Sets
+  //unordered collection of values,cannot have duplicates-faaster retrieval of finding a value (like - .contains())
   Set<int> numbers = {1, 2, 3, 4, 5};
   print('\nSet: $numbers');
   numbers.add(3); // Adding a duplicate value
@@ -110,8 +116,9 @@ void collections() {
   print('Set after removing 2: $numbers');
   print('Set contains 5: ${numbers.contains(5)}');
 
-  // Maps
-  Map<String, int> ages = {
+  // Maps - dictionaries
+  //var ages = <String,int> - preferred declaration for local variables
+  Map<String, int> ages = {  // prefereed method of initiation for global/class/instance variables
     'Alice': 30,
     'Bob': 25,
     'Carol': 28,
@@ -123,6 +130,7 @@ void collections() {
 
   // Iterating over collections
   print('\nIterating over list:');
+  //final - value cannot be changed/immutable
   for (final color in colors) {
     print(color);
   }
@@ -132,12 +140,14 @@ void collections() {
     print(number);
   }
 
+//ages.entries like dict.items() 
   print('\nIterating over map:');
   for (final entry in ages.entries) {
     print('${entry.key} is ${entry.value} years old');
   }
 
   // Collections of collections ...
+  //2D matrix - list of lists with int elements
   var matrix = <List<int>>[
     [1, 2, 3],
     [4, 5, 6],
@@ -149,6 +159,7 @@ void collections() {
     }
   }
 
+//key - String and value - list of int
   var matrixMap = <String, List<int>>{
     'row1': [1, 2, 3],
     'row2': [4, 5, 6],

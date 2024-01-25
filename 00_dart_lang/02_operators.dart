@@ -21,9 +21,14 @@ void main() {
   print("$a - $b = ${a - b}");
   print("$a * $b = ${a * b}");
   print("$a / $b = ${a / b}");
-  print("$a ~/ $b = ${a ~/ b}");
-  print("$a << $b = ${a << b}");
+  print("$a ~/ $b = ${a ~/ b}"); //like "//" integer division in python
+  print("$a << $b = ${a << b}"); 
+  //bitwise shift - Binary representation of 10 is 00001010. 
+  //Left shifting it by 3 positions results in 01010000, which is 80 in decimal.
+  
   print("$a >> $b = ${a >> b}");
+    //Binary representation of 10 is 00001010. Right shifting it by 3 positions results in 00000001,
+  // which is 1 in decimal.
   print("$a & $b = ${a & b}");
   print("$a | $b = ${a | b}");
 
@@ -73,13 +78,14 @@ void main() {
   int e = 12;
   int f = 9;
   int max = e > f ? e : f;
+  // if e>f is true, print a else print f-->finding max of e and f
   print("\nConditional (Ternary) Operator:");
   print("Maximum between $e and $f is $max");
 
   // Cascade notation
   print("\nCascade Notation:");
   List<int> list = [1, 2, 3, 4, 5]
-    ..add(6)
+    ..add(6) //used when we recursively perform operations over the same object
     ..add(7)
     ..add(8)
     ..add(9)
@@ -89,6 +95,6 @@ void main() {
   // Type test operators
   print("\nType Test Operators:");
   var g = 10;
-  print("g is int: ${g is int}");
+  print("g is int: ${g is int}"); // "is" refers to the type of the variable
   print("g is! int: ${g is! int}");
 }

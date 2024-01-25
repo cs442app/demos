@@ -68,8 +68,10 @@ void branches() {
 
 
   // switch-case
+  // break statement is not neccessary.it automatically exits after executing a case.
+  // if we want to fall through the next case, use labels (like GOTO) to where the execution should go and use Continue <label>
   print('\nswitch-case:');
-  final score = Random().nextInt(100);
+  final score = Random().nextInt(100); //100 is exclusive - 0 to 99
   print('score = $score');
   switch(score) {
     case 100:
@@ -96,6 +98,7 @@ void branches() {
 
 
   // switch-case as expression
+  // Can use the result of the switch case expression to store and use later
   String? grade = switch(score) {
     100 || >= 90 => 'A',
     >= 80 => 'B',
@@ -123,17 +126,23 @@ void patterns() {
   var p = point4; // try different values for `p`
 
 
-  // switch pattern-matching
+  // switch pattern-matching - A way of accessing the components of an iterable directly
+  // When we dont know what type of input we get,list/record/named record/map, we can use switch as below.
+  // Also, we need not unpack the iterable with a for, we can directly receive it unpacked as varilables inside
+  // It matches the brackets and also the type of data inside
+
   switch (p) {
     case (int x, int y):
       print('p is a pair of int: ($x, $y)');
       break;
     case (x: int a, y: int b):
-      print('p is a pair of named ints: (x=$a, y=$b)');
+      print('p is a pair of named ints: (x=$a, y=$b)'); 
       break;
     case [int x, int y]:
-      print('p is a list of ints: [$x, $y]');
+      print('p is a list of ints: [$x, $y]'); //can also use indexing like p[0]
       break;
+
+      // Map should have the exact same key x and y .their values should be integers
     case {'x': int x, 'y': int y}:
       print('p is a map of ints: (x=$x, y=$y)');
       break;
@@ -153,9 +162,11 @@ void patterns() {
   print('x = $x, y = $y');
 }
 
-
+// this function accepts 2 tuples - each with 2 int elements and return one tuple/record
 (int,int) vectorAdd((int,int) v1, (int,int) v2) {
+  // take each tuple and match them variable inside a tuple
   var (x1,y1) = v1;
   var (x2,y2) = v2;
-  return (x1 + x2, y1 + y2);
+   return (x1 + x2, y1 + y2);
+  // return (v1.$1 + v2.$1, v1.$2 + v2.$2); // can use like this also directly without assigning them labels x1,x2,y1,y2
 }
