@@ -1,7 +1,7 @@
-/// Demonstrates:
-/// - Integrating a simple RESTful web service with authentication
-/// - Saving session tokens in shared preferences
-/// - Replacing the current screen with a new screen
+// Demonstrates:
+// - Integrating a simple RESTful web service with authentication
+// - Saving session tokens in shared preferences
+// - Replacing the current screen with a new screen
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -121,16 +121,19 @@ class _LoginScreenState extends State<LoginScreen> {
       // Successful login. Save the session token or user info.
 
       // parse the session token from the response header
-      final sessionToken = response.headers['set-cookie']!.split(';')[0];
+      // final sessionToken = response.headers['set-cookie']!.split(';')[0];
+      final sessionToken = jsonDecode(response.body)['access_token'];
       await SessionManager.setSessionToken(sessionToken);
 
-      if (!mounted) return;
+      if (!context.mounted) return;
 
       // go to the main screen
       Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (_) => const HomeScreen(),
       ));
     } else {
+      if (!context.mounted) return;
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Login failed')),
       );
@@ -158,16 +161,19 @@ class _LoginScreenState extends State<LoginScreen> {
       // Successful registration. Treat this like a login.
 
       // parse the session token from the response header
-      final sessionToken = response.headers['set-cookie']!.split(';')[0];
+      // final sessionToken = response.headers['set-cookie']!.split(';')[0];
+      final sessionToken = jsonDecode(response.body)['access_token'];
       await SessionManager.setSessionToken(sessionToken);
 
-      if (!mounted) return;
+      if (!context.mounted) return;
 
       // go to the main screen
       Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (_) => const HomeScreen(),
       ));
     } else {
+      if (!context.mounted) return;
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Registration failed')),
       );
@@ -213,7 +219,7 @@ class _HomeScreenState extends State<HomeScreen> {
         'Content-Type': 'application/json',
 
         // need session token to create a post
-        'Cookie': await SessionManager.getSessionToken(),
+        'Authorization': 'Bearer ${await SessionManager.getSessionToken()}',
       },
 
       body: jsonEncode({
@@ -233,7 +239,7 @@ class _HomeScreenState extends State<HomeScreen> {
         'Content-Type': 'application/json',
 
         // need session token to delete a post
-        'Cookie': await SessionManager.getSessionToken(),
+        'Authorization': 'Bearer ${await SessionManager.getSessionToken()}',
       },
     );
     _refreshPosts();

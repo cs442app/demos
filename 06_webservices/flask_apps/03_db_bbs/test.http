@@ -15,6 +15,7 @@ Content-Type: application/json
 
 ###
 
+# @name login
 POST http://localhost:5001/login
 Content-Type: application/json
 
@@ -25,13 +26,10 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:5001/logout
-
-###
-
 # @name createPost
 POST http://localhost:5001/posts
 Content-type: application/json
+Authorization: Bearer {{login.response.body.$.access_token}}
 
 {
     "title": "A car",
@@ -43,6 +41,7 @@ Content-type: application/json
 @postId = {{createPost.response.body.$.id}}
 
 DELETE http://localhost:5001/posts/{{postId}}
+Authorization: Bearer {{login.response.body.$.access_token}}
 
 ###
 
@@ -51,3 +50,4 @@ GET http://localhost:5001/users
 ###
 
 DELETE http://localhost:5001/users/{{username}}
+Authorization: Bearer {{login.response.body.$.access_token}}

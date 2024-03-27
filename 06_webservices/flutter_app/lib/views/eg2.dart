@@ -1,6 +1,6 @@
-/// Demonstrates:
-/// - Integrating a simple RESTful web service
-/// - Sending and receiving JSON data
+// Demonstrates:
+// - Integrating a simple RESTful web service
+// - Sending and receiving JSON data
 
 import 'dart:convert';
 import 'package:flutter/material.dart';

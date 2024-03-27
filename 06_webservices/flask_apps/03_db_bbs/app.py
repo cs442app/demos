@@ -1,21 +1,29 @@
 # A web app that allows users to create, read, and delete posts.
 # Users must register and log in to create posts, and can only 
 # delete posts that they created. User and post information is
-# stored in a SQLite database. Session management is handled by
-# the Flask-Session extension.
+# stored in a SQLite database. JSON Web Tokens (JWT) are used
+# for authentication.
 
-from flask import Flask, request, abort, session, jsonify
-from flask_session import Session
+from flask import Flask, request, abort, jsonify
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
+from flask_bcrypt import Bcrypt
 from functools import wraps
 import sqlite3
 import json
+from datetime import timedelta
 
 
 app = Flask(__name__)
 
-# Session configuration
-app.config['SESSION_TYPE'] = 'filesystem'  # Use filesystem-based session
-Session(app)
+
+# Bcrypt configuration
+bcrypt = Bcrypt(app)
+
+
+# JWT configuration
+app.config['JWT_SECRET_KEY'] = 'cs442-webservice-demo!'
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
+jwt = JWTManager(app)
 
 
 # Initialize the SQLite database
@@ -40,15 +48,6 @@ CREATE TABLE IF NOT EXISTS posts (
 db.commit()
 
 
-def login_required(func):
-    @wraps(func)
-    def decorated_function(*args, **kwargs):
-        if 'user_id' not in session:
-            abort(401)
-        return func(*args, **kwargs)
-    return decorated_function
-
-
 @app.route('/posts')
 def list_posts():
     cursor.execute('''
@@ -63,13 +62,13 @@ def list_posts():
 
 
 @app.route('/posts', methods=['POST'])
-@login_required
+@jwt_required()
 def add_post():
     data = request.get_json()
     title = data.get('title')
     content = data.get('content')
 
-    user_id = session['user_id']
+    user_id = get_jwt_identity()
     cursor.execute('INSERT INTO posts (title,content,user_id) VALUES (?,?,?)', 
                    (title, content, user_id))
     db.commit()
@@ -78,10 +77,10 @@ def add_post():
 
 
 @app.route('/posts/<int:id>', methods=['DELETE'])
-@login_required
+@jwt_required()
 def delete_post(id):
     # check to make sure that the post creator is the one deleting it
-    user_id = session['user_id']
+    user_id = get_jwt_identity()
 
     cursor.execute('SELECT * FROM posts WHERE id = ?', (id,))
     post = cursor.fetchone()
@@ -109,8 +108,11 @@ def register():
                             (username, password))
             db.commit()
             user_id = cursor.lastrowid
-            session['user_id'] = user_id
-            return jsonify({'message': f'User created successfully'})
+            access_token = create_access_token(identity=user_id)
+            return jsonify({
+                'message': f'User created successfully',
+                'access_token': access_token
+            })
         except sqlite3.Error as e:
             abort(409)
     
@@ -126,9 +128,11 @@ def login():
     user = cursor.fetchone()
 
     if user:
-        # Store user information in the session
-        session['user_id'] = user[0]
-        return jsonify({'message': 'Login successful'})
+        access_token = create_access_token(identity=user[0])
+        return jsonify({
+            'message': 'Login successful',
+            'access_token': access_token
+        })
     else:
         abort(401)
 
@@ -141,10 +145,10 @@ def list_users():
 
 
 @app.route('/users/<username>', methods=['DELETE'])
-@login_required
+@jwt_required()
 def delete_user(username):
     # check to make sure that the user is deleting their own account
-    user_id = session['user_id']
+    user_id = get_jwt_identity()
 
     print(username)
     cursor.execute('SELECT * FROM users WHERE username = ?', (username,))
@@ -163,15 +167,7 @@ def delete_user(username):
     cursor.execute('DELETE FROM users WHERE username = ?', (username,))
     db.commit()
 
-    session.pop('user_id', None)
-
     return json.dumps({'success': True})
-
-
-@app.route('/logout')
-def logout():
-    session.pop('user_id', None)
-    return jsonify({'message': 'Logout successful'})
 
 
 @app.errorhandler(401)

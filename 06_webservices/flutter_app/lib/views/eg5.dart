@@ -1,6 +1,6 @@
-/// Demonstrates:
-/// - Using asynchronous streams
-/// - Using the StreamBuilder widget
+// Demonstrates:
+// - Using asynchronous streams
+// - Using the StreamBuilder widget
 
 import 'package:flutter/material.dart';
 import 'dart:async';

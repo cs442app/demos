@@ -1,0 +1,12 @@
+GET http://localhost:5001/
+
+###
+
+GET http://localhost:5001/cn
+
+###
+
+PUT http://localhost:5001/cn
+Content-Type: text/utf-8
+
+bar

@@ -1,7 +1,7 @@
-/// Demonstrates:
-/// - Integrating Google Firebase
-/// - Using the Cloud Firestore NoSQL database
-/// - Implementing a simple real-time chat app
+// Demonstrates:
+// - Integrating Google Firebase
+// - Using the Cloud Firestore NoSQL database
+// - Implementing a simple real-time chat app
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

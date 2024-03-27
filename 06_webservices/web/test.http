@@ -1,0 +1,36 @@
+GET https://fakestoreapi.com/products
+
+###
+
+GET https://fakestoreapi.com/products/4
+
+###
+
+GET https://fakestoreapi.com/products/category/electronics
+
+###
+
+# User registration
+POST https://fakestoreapi.com/users
+Content-Type: application/json
+
+{
+    "username": "michael",
+    "password": "michael123"
+}
+
+### 
+
+# User info
+GET https://fakestoreapi.com/users/
+
+###
+
+# User login
+POST https://fakestoreapi.com/auth/login
+Content-Type: application/json
+
+{
+    "username": "johnd",
+    "password": "m38rmF$"
+}

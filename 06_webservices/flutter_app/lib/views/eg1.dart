@@ -1,12 +1,12 @@
-/// Demonstrates:
-///  - HTTP requests
-///  - Using FutureBuilder to perform async web requests
-///  - Integrating a simple web service
-/// 
-/// Note that HTTP requests won't work in Chrome/Edge because of CORS.
-/// 
-/// For MacOS, add the following to macos/Runner/DebugProfile.entitlements:
-///  <key>com.apple.security.network.client</key><true/>
+// Demonstrates:
+//  - HTTP requests
+//  - Using FutureBuilder to perform async web requests
+//  - Integrating a simple web service
+// 
+// Note that HTTP requests won't work in Chrome/Edge because of CORS.
+// 
+// For MacOS, add the following to macos/Runner/DebugProfile.entitlements:
+//  <key>com.apple.security.network.client</key><true/>
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -125,7 +125,7 @@ class _HelloEditorState extends State<HelloEditor> {
       body: utf8.encoder.convert(_helloField.text)
     );
 
-    if (!context.mounted) return; // async gap
+    if (!mounted) return; // async gap
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

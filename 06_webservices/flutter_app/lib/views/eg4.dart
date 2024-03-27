@@ -1,5 +1,5 @@
-/// Demonstrates:
-/// - Consuming a simple third-party REST API
+// Demonstrates:
+// - Consuming a simple third-party REST API
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
