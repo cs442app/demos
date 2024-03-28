@@ -5,9 +5,9 @@
 # for authentication.
 
 from flask import Flask, request, abort, jsonify
-from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
+from flask_jwt_extended import (JWTManager, jwt_required, 
+                                create_access_token, get_jwt_identity)
 from flask_bcrypt import Bcrypt
-from functools import wraps
 import sqlite3
 import json
 from datetime import timedelta
@@ -102,10 +102,11 @@ def register():
         data = request.get_json()
         username = data.get('username')
         password = data.get('password')
+        password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
 
         try:
             cursor.execute('INSERT INTO users (username,password) VALUES (?,?)',
-                            (username, password))
+                            (username, password_hash))
             db.commit()
             user_id = cursor.lastrowid
             access_token = create_access_token(identity=user_id)
@@ -123,11 +124,10 @@ def login():
     username = data.get('username')
     password = data.get('password')
 
-    cursor.execute('SELECT * FROM users WHERE username=? AND password=?', 
-                    (username, password))
+    cursor.execute('SELECT * FROM users WHERE username=?', (username,))
     user = cursor.fetchone()
 
-    if user:
+    if user and bcrypt.check_password_hash(user[2], password):
         access_token = create_access_token(identity=user[0])
         return jsonify({
             'message': 'Login successful',
