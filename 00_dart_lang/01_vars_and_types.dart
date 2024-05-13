@@ -27,15 +27,20 @@ void simpleTypes() {
   print('fpnum.runtimeType = ${fpnum.runtimeType}');
   print('snum.runtimeType = ${snum.runtimeType}');
 
+  // different types
   // inum = fpnum;
   // fpnum = inum;
 
-  inum = fpnum.toInt();
-  fpnum = inum.toDouble();
-  // fpnum = inum as double;
+  // type casting
+  // fpnum = inum as double; // type casting
 
-  inum = int.parse(snum);
-  snum = inum.toString();
+  // explicit type conversions
+  // inum = fpnum.toInt();
+  // fpnum = inum.toDouble();
+
+  // more type conversions
+  // inum = int.parse(snum);
+  // snum = inum.toString();
 }
 
 /*****************************************************************************/
@@ -47,9 +52,9 @@ void nullableTypes() {
 
   print(n == null);
 
-  print(n.abs());
+  print(n?.abs()); // `?.` is the null-aware `.` operator
 
-  print(n + 10);
+  print(n??0 + 10); // `??` takes a default value if the first operand is null
 }
 
 /*****************************************************************************/
@@ -59,33 +64,35 @@ void complexTypes() {
   var fpnum = 3.14;
   var snum = '442';
 
-  var listOfAll = [inum, fpnum, snum];
-
-  List<Object> listOfObjs = [inum, fpnum, snum];
-
-  var listOfNums = [inum, fpnum, -5, 0.01];
-
-  var listOfStrs = [snum, 'mobile', 'app', 'dev'];
-
+  // what are the inferred types of the following?
+  var listOfNum     = [inum, fpnum, -5, 0.01];
+  var listOfStr     = [snum, 'mobile', 'app', 'dev'];
+  var listOfAll     = [inum, fpnum, snum];
   var listOfUnknown = [];
+  var listOfStr2    = <String>[];
 
-  var listOfStrs2 = <String>[];
-
-  List<String> listOfStrs3 = [];
-
+  print('listOfNum.runtimeType = ${listOfNum.runtimeType}');
+  print('listOfStr.runtimeType = ${listOfStr.runtimeType}');
   print('listOfAll.runtimeType = ${listOfAll.runtimeType}');
-  print('listOfObjs.runtimeType = ${listOfObjs.runtimeType}');
-  print('listOfNums.runtimeType = ${listOfNums.runtimeType}');
-  print('listOfStrs.runtimeType = ${listOfStrs.runtimeType}');
   print('listOfUnknown.runtimeType = ${listOfUnknown.runtimeType}');
-  print('listOfStrs2.runtimeType = ${listOfStrs2.runtimeType}');
-  print('listOfStrs3.runtimeType = ${listOfStrs3.runtimeType}');
+  print('listOfStr2.runtimeType = ${listOfStr2.runtimeType}');
 
-  print(listOfObjs[0] is int);
-  // print(listOfObjs[0] + 10);
+  // print(listOfNum[0] + 10);
+  // print(listOfAll[0] is int);
+  // print(listOfAll[0] + 10); // how to fix this?
 
-  print(listOfObjs[2] is String);
-  // print(listOfObjs[2].length);
+  // print(listOfStr[0].length);
+  // print(listOfAll[2] is String);
+  // print(listOfAll[2].length); // how to fix this?
 
-  print(listOfStrs[0].length);
+  // listOfUnknown.add('dart');
+  // listOfUnknown.add(42);
+  // listOfUnknown.add(null);
+  // print(listOfUnknown[0].length);
+  // print(listOfUnknown[1].length);
+
+  // listOfStr2.add('flutter');
+  // listOfStr2.add(42); // is this possible?
+  // listOfStr2.add(null); // is this possible?
+  // print(listOfStr2[0].length);
 }
