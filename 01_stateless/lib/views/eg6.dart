@@ -74,7 +74,7 @@ class App6 extends StatelessWidget {
           ),
         ],
       )
-     );
+    );
   }
 }
 
