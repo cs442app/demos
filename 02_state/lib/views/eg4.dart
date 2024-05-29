@@ -1,6 +1,7 @@
 /* Topics to demonstrate:
  * - Extracting state into a model class
  * - ChangeNotifier, Listenable, and ListenableBuilder
+ * - Builder pattern
  */
 
 import 'package:flutter/material.dart';
@@ -24,8 +25,13 @@ class _App4State extends State<App4> {
         // A `ListenableBuilder` is paired with a `Listenable` object 
         // (like a `ChangeNotifier`) and rebuilds its subtree whenever 
         // the `Listenable` sends notification of a change
+        // 
+        // Our first instance of the "builder pattern", where a widget
+        // is constructed by a callback function
         ListenableBuilder(
+          // the model that is listened to
           listenable: _counter, 
+          // this callback is used to rebuild the widget when the model changes
           builder: (BuildContext context, Widget? child) {
             return Text('Counter: ${_counter.count}');
           }
@@ -48,7 +54,7 @@ class CounterModel with ChangeNotifier {
 
   void increment(int inc) {
     _count += inc;
-    notifyListeners();
+    notifyListeners(); // notify listeners of the change
   }
 }
 

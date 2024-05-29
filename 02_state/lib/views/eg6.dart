@@ -11,10 +11,12 @@ class App6 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // The ChangeNotifierProvider is a widget that provides a model to all
-    // children widgets. 
+    // The ChangeNotifierProvider is an inherited widget that provides the model
+    // to all children in the widget tree
     return ChangeNotifierProvider(
+      // this callback is used to create the model
       create: (context) => CountersModel(), 
+      // the child widget (tree) that will have access to the model
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -55,6 +57,8 @@ class SumDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // The Consumer widget listens to the model and rebuilds its subtree
+    // whenever the model sends notification of a change
     return Consumer<CountersModel>(
       builder: (context, counters, _) {
         return Padding(
@@ -74,6 +78,8 @@ class CounterDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // The Consumer widget listens to the model and rebuilds its subtree
+    // whenever the model sends notification of a change
     return Consumer<CountersModel>(
       builder: (context, counters, _) {
         return Padding(
@@ -98,6 +104,9 @@ class Incrementer extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: ElevatedButton(
         onPressed: () {
+          // Provider.of is used to access 
+          // The listen parameter is set to false to prevent the widget from
+          // rebuilding when the model changes
           Provider.of<CountersModel>(context, listen: false)
           .increment(index, increment ?? 1);
         },

@@ -16,8 +16,8 @@ class App1 extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [ 
         IncrementableCounter(increment: 1),
-        IncrementableCounter(increment: 2),
-        IncrementableCounter(increment: 3),
+        // IncrementableCounter(increment: 2),
+        // IncrementableCounter(increment: 3),
       ],
     );
   }
@@ -58,7 +58,7 @@ class _IncrementableCounterState extends State<IncrementableCounter> {
         const SizedBox(height: 16),
         ElevatedButton(
           onPressed: _incrementCounter, // callback to mutate state
-          child: Text('+ ${widget.increment}'),
+          child: Text('+ ${widget.increment}'), 
         ),
       ],
     );
