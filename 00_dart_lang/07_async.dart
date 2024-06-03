@@ -1,3 +1,5 @@
+import 'dart:async';
+
 void main() {
   print('main() started');
   switch(1) {
@@ -15,6 +17,13 @@ void main() {
       break;
     case 3:
       asyncFunction3a();
+      break;
+    case 4:
+      asyncFunction4();
+      // create a timer that repeatedly invokes a callback
+      Timer.periodic(Duration(milliseconds: 500), (timer) {
+        print('Timer tick');
+      });
       break;
   }
   print('main() finishing');
@@ -74,4 +83,16 @@ void asyncFunction3b() async {
     print('Future failed with error: $error');
   }
   print('asyncFunction3b() finishing');
+}
+
+// multiple futures
+void asyncFunction4() async {
+  print('asyncFunction4() started');
+  var result = await Future.delayed(Duration(seconds: 1), () => 42);
+  print('First future resolved with result: $result');
+  result = await Future.delayed(Duration(seconds: 1), () => 43);
+  print('Second future resolved with result: $result');
+  result = await Future.delayed(Duration(seconds: 1), () => 44);
+  print('Third future resolved with result: $result');
+  print('asyncFunction4() finishing');
 }
