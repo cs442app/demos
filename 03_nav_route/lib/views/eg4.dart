@@ -65,7 +65,8 @@ class MacGuffinsListPage extends StatelessWidget {
             return ListTile(
               title: Text(collection[index].name),
               onTap: () {
-                Navigator.of(context).push(
+                Navigator.push(
+                  context,
                   MaterialPageRoute(
                     builder: (context) {
                       // ChangeNotifierProvider is scoped by route, so
@@ -145,7 +146,7 @@ class _MacGuffinEditPageState extends State<MacGuffinEditPage> {
                 _collection.update(widget.index, _editedMacGuffin);
 
                 // no need to return anything!
-                Navigator.of(context).pop();
+                Navigator.pop(context);
               },
             ),
           ],

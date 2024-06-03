@@ -64,7 +64,8 @@ class _MacGuffinsListPageState extends State<MacGuffinsListPage> {
     // `await` suspends execution until the `DetailPage` is popped off the
     // navigation stack, at which point it returns the value passed to
     // `Navigator.pop` (if any)
-    var result = await Navigator.of(context).push(
+    var result = await Navigator.push(
+      context,
       MaterialPageRoute<MacGuffin>(
         builder: (context) {
           return MacGuffinEditPage(data[index]);
@@ -135,7 +136,7 @@ class _MacGuffinEditPageState extends State<MacGuffinEditPage> {
               onPressed: () {
                 // Pop the current screen off the navigation stack, and pass
                 // the new name back to the previous screen
-                Navigator.of(context).pop(editedMacGuffin);
+                Navigator.pop(context, editedMacGuffin);
               },
             ),
           ],

@@ -37,7 +37,8 @@ class QuestionPage extends StatelessWidget {
                 // `Navigator.push` returns a `Future` that completes when the
                 // pushed page is popped off the navigation stack. The `Future`
                 // contains the value (if any) passed to `Navigator.pop`
-                Future<String?> result = Navigator.of(context).push(
+                Future<String?> result = Navigator.push(
+                  context,
                   MaterialPageRoute<String>(
                     builder: (context) {
                       // Pass the chosen question to the next page
@@ -98,7 +99,7 @@ class DecisionPage extends StatelessWidget {
                   onPressed: () {
                     // "Return" the answer to the previous page (this gets
                     // put in the `Future` returned by `Navigator.push`)
-                    Navigator.of(context).pop(answer);
+                    Navigator.pop(context, answer);
                   },
                 );
               }).toList(),

@@ -30,8 +30,9 @@ class Page1 extends StatelessWidget {
           child: const Text('Go to Page 2'),
           onPressed: () {
             // Push a new screen onto the navigation stack
-            // equivalent to Navigator.push(context, ...)
-            Navigator.of(context).push(
+            // equivalent to Navigator.of(context).push(...)
+            Navigator.push(
+              context,
               // MaterialPageRoute defines a modal (full screen) route
               MaterialPageRoute(
                 // The builder function returns the widget tree
@@ -62,8 +63,8 @@ class Page2 extends StatelessWidget {
           child: const Text('Go back to Page 1'),
           onPressed: () {
             // Pop the current screen off the navigation stack
-            // equivalent to Navigator.pop(context)
-            Navigator.of(context).pop();
+            // equivalent to Navigator.of(context).pop()
+            Navigator.pop(context);
           },
         ),
       )
