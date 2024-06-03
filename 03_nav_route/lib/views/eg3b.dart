@@ -51,6 +51,7 @@ class _MacGuffinsListPageState extends State<MacGuffinsListPage> {
         itemBuilder: (context, index) {
           return ListTile(
             title: Text(data[index].name),
+            subtitle: Text(data[index].description ?? ''),
             onTap: () {
               _editMacGuffin(context, index);
             },
@@ -64,7 +65,7 @@ class _MacGuffinsListPageState extends State<MacGuffinsListPage> {
     // `await` suspends execution until the `DetailPage` is popped off the
     // navigation stack, at which point it returns the value passed to
     // `Navigator.pop` (if any)
-    var result = await Navigator.push(
+    var result = await Navigator.push<MacGuffin?>(
       context,
       MaterialPageRoute<MacGuffin>(
         builder: (context) {
@@ -136,7 +137,7 @@ class _MacGuffinEditPageState extends State<MacGuffinEditPage> {
               onPressed: () {
                 // Pop the current screen off the navigation stack, and pass
                 // the new name back to the previous screen
-                Navigator.pop(context, editedMacGuffin);
+                Navigator.pop<MacGuffin?>(context, editedMacGuffin);
               },
             ),
           ],

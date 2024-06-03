@@ -34,7 +34,7 @@ class QuestionPage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute<String>(
+                  MaterialPageRoute(
                     builder: (context) {
                       // Pass the chosen question to the next page
                       return DecisionPage(questions[index]);

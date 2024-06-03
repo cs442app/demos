@@ -37,8 +37,9 @@ class QuestionPage extends StatelessWidget {
                 // `Navigator.push` returns a `Future` that completes when the
                 // pushed page is popped off the navigation stack. The `Future`
                 // contains the value (if any) passed to `Navigator.pop`
-                Future<String?> result = Navigator.push(
+                Future<String?> result = Navigator.push<String?>(
                   context,
+                  // the pushed route resolves to a `String` (the answer)
                   MaterialPageRoute<String>(
                     builder: (context) {
                       // Pass the chosen question to the next page
@@ -62,7 +63,7 @@ class QuestionPage extends StatelessWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('You chose: ${value ?? 'nothing'}'),
-                      duration: const Duration(seconds: 1),
+                      duration: const Duration(seconds: 3),
                     ),
                   );
                 });
@@ -99,7 +100,7 @@ class DecisionPage extends StatelessWidget {
                   onPressed: () {
                     // "Return" the answer to the previous page (this gets
                     // put in the `Future` returned by `Navigator.push`)
-                    Navigator.pop(context, answer);
+                    Navigator.pop<String?>(context, answer);
                   },
                 );
               }).toList(),

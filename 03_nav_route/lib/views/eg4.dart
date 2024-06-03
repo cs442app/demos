@@ -63,6 +63,7 @@ class MacGuffinsListPage extends StatelessWidget {
           itemBuilder: (context, index) {
             return ListTile(
               title: Text(collection[index].name),
+              subtitle: Text(collection[index].description?? ''),
               onTap: () {
                 Navigator.push(
                   context,

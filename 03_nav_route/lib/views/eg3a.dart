@@ -61,9 +61,9 @@ class _MacGuffinsListPageState extends State<MacGuffinsListPage> {
   void _editMacGuffin(BuildContext context, int index) {
     Navigator.push(
       context,
-      MaterialPageRoute<MacGuffin>(
+      MaterialPageRoute(
         builder: (context) {
-          return MacGuffinEditPage(data[index]);
+          return MacGuffinEditPage(data[index]); // pass the data
         }
       ),
     );
