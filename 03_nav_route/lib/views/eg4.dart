@@ -1,6 +1,5 @@
 /* Topics demonstrated:
  * - Common list -> detail drill-down pattern
- * - "Editing" and returning new data from a detail page
  * - Simplifying state management using the `provider` package
  */
 
