@@ -1,5 +1,7 @@
 // Demonstrates the use of shared preferences to persist data.
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,60 +11,49 @@ class App1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: SharedPrefsDemo(),
+      home: PreferencesList(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class SharedPrefsDemo extends StatefulWidget {
-  // toggle this to turn persistence on/off
-  final bool persistData = true;
-
-  const SharedPrefsDemo({super.key});
+class PreferencesList extends StatefulWidget {
+  const PreferencesList({super.key});
 
   @override
-  State<SharedPrefsDemo> createState() => _SharedPrefsDemoState();
+  State<PreferencesList> createState() => _PreferencesListState();
 }
 
-class _SharedPrefsDemoState extends State<SharedPrefsDemo> {
-  int _counter = 0;
-
-  // needed to control the text field (e.g., change its displayed text)
-  final TextEditingController _messageController = TextEditingController();
-  
+class _PreferencesListState extends State<PreferencesList> {
+  bool _darkMode = false;
+  bool _showAds = true;
+  String _version = '';
+  String _language = '';
 
   @override
   void initState() {
     super.initState();
-    _loadData();
-    _messageController.addListener(() { 
-      _saveMessage();
-    });
+    _loadPreferences();
   }
 
-  // load data from shared preferences (asynchronously)
-  Future<void> _loadData() async {
-    final prefs = await SharedPreferences.getInstance();
+  _loadPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // let's pretend this takes a while
+    await Future.delayed(const Duration(seconds: 2));
     setState(() {
-      _counter = (prefs.getInt('counter') ?? 0);
-      _messageController.text = (prefs.getString('message') ?? '');
+      _darkMode = prefs.getBool('darkMode') ?? false;
+      _showAds = prefs.getBool('showAds') ?? true;
+      _version = prefs.getString('version') ?? '1.0.0';
+      _language = prefs.getString('language') ?? 'English';
     });
   }
 
-  Future<void> _updateCounter(int inc) async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _counter += inc;
-      if (widget.persistData) {
-        prefs.setInt('counter', _counter);
-      }
-    });
-  }
-
-  Future<void> _saveMessage() async {
-    final prefs = await SharedPreferences.getInstance();
-    if (widget.persistData) {
-      prefs.setString('message', _messageController.text);
+  _savePreference(String key, dynamic value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (value is bool) {
+      await prefs.setBool(key, value);
+    } else if (value is String) {
+      await prefs.setString(key, value);
     }
   }
 
@@ -70,38 +61,78 @@ class _SharedPrefsDemoState extends State<SharedPrefsDemo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Shared Preferences Demo'),
+        title: const Text('Preferences'),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      body: ListView(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () => _updateCounter(-1), 
-                child: const Text('--')
-              ),
-              const SizedBox(width: 20),
-              Text('Counter: $_counter'),
-              const SizedBox(width: 20),
-              ElevatedButton(
-                onPressed: () => _updateCounter(1), 
-                child: const Text('++')
-              ),
-            ],
+          SwitchListTile(
+            title: const Text('Dark Mode'),
+            value: _darkMode,
+            onChanged: (bool value) {
+              setState(() {
+                _darkMode = value;
+                _savePreference('darkMode', value);
+              });
+            },
           ),
-          Padding(
-            padding: const EdgeInsets.all(40.0),
-            child: TextFormField(
-              controller: _messageController,
-              decoration: const InputDecoration(
-                labelText: 'Message',
-              ),
-            ),
+          SwitchListTile(
+            title: const Text('Show Ads'),
+            value: _showAds,
+            onChanged: (bool value) {
+              setState(() {
+                _showAds = value;
+                _savePreference('showAds', value);
+              });
+            },
+          ),
+          ListTile(
+            title: const Text('App Version'),
+            subtitle: Text(_version),
+          ),
+          ListTile(
+            title: const Text('Language'),
+            subtitle: Text(_language),
+            onTap: () async {
+              String selectedLanguage = await _selectLanguage();
+              setState(() {
+                _language = selectedLanguage;
+                _savePreference('language', selectedLanguage);
+              });
+            },
           ),
         ],
       ),
     );
+  }
+
+  Future<String> _selectLanguage() async {
+    return await showDialog<String>(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: const Text('Select Language'),
+          children: [
+            SimpleDialogOption(
+              onPressed: () {
+                Navigator.pop(context, 'English');
+              },
+              child: const Text('English'),
+            ),
+            SimpleDialogOption(
+              onPressed: () {
+                Navigator.pop(context, 'Spanish');
+              },
+              child: const Text('Spanish'),
+            ),
+            SimpleDialogOption(
+              onPressed: () {
+                Navigator.pop(context, 'French');
+              },
+              child: const Text('French'),
+            ),
+          ],
+        );
+      },
+    ) ?? _language;
   }
 }
