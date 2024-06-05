@@ -1,3 +1,6 @@
+// Demonstrates:
+// - how to persist data using Isar
+
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -83,7 +86,20 @@ class _CustomerListState extends State<CustomerList> {
         itemCount: customers.length,
         itemBuilder: (context, index) {
           final customer = customers[index];
-          return ListTile(
+          return Dismissible(
+            key: Key(customer.id.toString()), 
+            onDismissed: (_) {
+              setState(() {
+                db!.write((isar) {
+                  isar.customers.delete(customer.id);
+                });
+              });
+            },
+            background: Container(
+              color: Colors.red,
+              child: const Icon(Icons.delete),
+            ),
+            child: ListTile(
             title: Text(customer.name ?? ''),
             subtitle: Text(customer.email ?? ''),
             onTap: () {
@@ -93,6 +109,7 @@ class _CustomerListState extends State<CustomerList> {
                 ),
               );
             },
+          )
           );
         },
       ),
