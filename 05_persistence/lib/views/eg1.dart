@@ -1,4 +1,4 @@
-// Demonstrates the use of shared preferences to persist data.
+// Demonstrates the use of shared preferences to persist app settings.
 
 import 'dart:async';
 
@@ -25,10 +25,10 @@ class PreferencesList extends StatefulWidget {
 }
 
 class _PreferencesListState extends State<PreferencesList> {
-  bool _darkMode = false;
-  bool _showAds = true;
-  String _version = '';
-  String _language = '';
+  bool _darkMode   = false;
+  bool _showAds    = false;
+  String _version  = '0.0';
+  String _language = 'English';
 
   @override
   void initState() {
@@ -38,12 +38,20 @@ class _PreferencesListState extends State<PreferencesList> {
 
   _loadPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    
     // let's pretend this takes a while
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 3));
+
     setState(() {
-      _darkMode = prefs.getBool('darkMode') ?? false;
-      _showAds = prefs.getBool('showAds') ?? true;
-      _version = prefs.getString('version') ?? '1.0.0';
+      // since the settings will almost certainly be set *after* the widget 
+      // is built and mounted, we need to call setState to update the UI
+    
+      // BUT! without the delay above, it's also possible that the settings
+      // will be loaded *before* the widget is built, in which case we should
+      // NOT call setState (why?). How can we handle this?
+      _darkMode = prefs.getBool('darkMode')   ?? false;
+      _showAds  = prefs.getBool('showAds')    ?? false;
+      _version  = prefs.getString('version')  ?? '0.0';
       _language = prefs.getString('language') ?? 'English';
     });
   }
