@@ -11,6 +11,7 @@ class App2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       home: SimpleNotepad(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
