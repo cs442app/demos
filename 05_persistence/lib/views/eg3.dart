@@ -12,19 +12,20 @@ class App3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: JSONAssetDemo(),
+      home: PersonView(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class JSONAssetDemo extends StatefulWidget {
-  const JSONAssetDemo({super.key});
+class PersonView extends StatefulWidget {
+  const PersonView({super.key});
 
   @override
-  State<JSONAssetDemo> createState() => _JSONAssetDemoState();
+  State<PersonView> createState() => _PersonViewState();
 }
 
-class _JSONAssetDemoState extends State<JSONAssetDemo> {
+class _PersonViewState extends State<PersonView> {
   late Future<Map<String,dynamic>> _data;
 
   @override
@@ -54,15 +55,24 @@ class _JSONAssetDemoState extends State<JSONAssetDemo> {
       future: _data,
       builder: (context, snapshot) {
         // `snapshot` represents the current state of our future
-        // --- we can check to see if it's done, if it has data, etc.
+        // --- we can check if it's still pending, failed, or has data
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
             body: Center(
               child: CircularProgressIndicator(),
             ),
           );
+        } else if (snapshot.hasError) {
+          return Scaffold(
+            body: Center(
+              child: Text('Error: ${snapshot.error}'),
+            ),
+          );
         } else {
           return Scaffold(
+            appBar: AppBar(
+              title: const Text('Person Info'),
+            ),
             body: ListView.builder(
               // `snapshot.data` is the data returned by the future
               itemCount: snapshot.data!.length,
