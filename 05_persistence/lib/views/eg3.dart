@@ -1,11 +1,10 @@
-/// Demonstrates:
-/// - how to load data from a JSON asset
-/// - how to use a FutureBuilder to deal with asynchronously loaded data
-///   (and not delay widget rendering)
+// Demonstrates:
+// - how to load data from a JSON asset
+// - how to use a FutureBuilder to deal with asynchronously loaded data
+//   (and not delay widget rendering)
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
-// ignore_for_file: avoid_print
 
 class App3 extends StatelessWidget {
   const App3({super.key});

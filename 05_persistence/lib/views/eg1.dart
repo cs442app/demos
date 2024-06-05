@@ -1,4 +1,4 @@
-/// Demonstrates the use of shared preferences to persist data.
+// Demonstrates the use of shared preferences to persist data.
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';

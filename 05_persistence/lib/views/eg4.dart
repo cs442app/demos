@@ -1,6 +1,6 @@
-/// Demonstrates:
-/// - how to use the provider package's FutureProvider to deal with
-///   asynchronously loaded data
+// Demonstrates:
+// - how to use the provider package's FutureProvider to deal with
+//   asynchronously loaded data
 
 import 'dart:convert';
 import 'package:flutter/material.dart';

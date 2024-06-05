@@ -1,10 +1,8 @@
-/// Demonstrates how to save and load data to/from a file.
+// Demonstrates how to save and load data to/from a file.
 
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-// ignore_for_file: avoid_print
-
 
 class App2 extends StatelessWidget {
   const App2({super.key});

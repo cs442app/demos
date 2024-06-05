@@ -1,7 +1,7 @@
-/// Demonstrates:
-/// - how to persist data to a database
-/// - how to manage asynchronous data loading
-/// - swipe-to-delete
+// Demonstrates:
+// - how to persist data to a database
+// - how to manage asynchronous data loading
+// - swipe-to-delete
 
 import 'dart:math';
 import 'package:flutter/material.dart';
@@ -10,7 +10,6 @@ import 'package:word_generator/word_generator.dart';
 import 'package:intl/intl.dart';
 import '../models/orders.dart';
 import '../utils/db_helper.dart';
-
 
 class App5 extends StatelessWidget {
   const App5({super.key});
@@ -27,25 +26,25 @@ class App5 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       home: FutureProvider<List<Customer>?>(
         create: (_) => _loadData(),
         initialData: null,
-        child: const PersonList()
+        child: const CustomerList()
       ),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
 
 
-class PersonList extends StatefulWidget {
-  const PersonList({super.key});
+class CustomerList extends StatefulWidget {
+  const CustomerList({super.key});
 
   @override
-  State<PersonList> createState() => _PersonListState();
+  State<CustomerList> createState() => _CustomerListState();
 }
 
-class _PersonListState extends State<PersonList> {
+class _CustomerListState extends State<CustomerList> {
   @override
   Widget build(BuildContext context) {
     final people = Provider.of<List<Customer>?>(context);
@@ -60,7 +59,7 @@ class _PersonListState extends State<PersonList> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('People'),
+        title: const Text('Customers'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
@@ -145,7 +144,7 @@ class _OrderListState extends State<OrderList> {
 
           return Scaffold(
             appBar: AppBar(
-              title: const Text('Orders'),
+              title: Text(widget.customer.name),
             ),
             floatingActionButton: FloatingActionButton(
               onPressed: () async {

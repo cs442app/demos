@@ -1,4 +1,4 @@
-/// Model classes for Customer and Order, used in eg5.dart
+// Model classes for Customer and Order, used in eg5.dart
 
 import '../utils/db_helper.dart';
 
