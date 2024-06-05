@@ -10,20 +10,20 @@ class App2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: FilePersistenceDemo(),
+      home: SimpleNotepad(),
     );
   }
 }
 
 
-class FilePersistenceDemo extends StatefulWidget {
-  const FilePersistenceDemo({super.key});
+class SimpleNotepad extends StatefulWidget {
+  const SimpleNotepad({super.key});
 
   @override
-  State<FilePersistenceDemo> createState() => _FilePersistenceDemoState();
+  State<SimpleNotepad> createState() => _SimpleNotepadState();
 }
 
-class _FilePersistenceDemoState extends State<FilePersistenceDemo> {
+class _SimpleNotepadState extends State<SimpleNotepad> {
   final TextEditingController _controller = TextEditingController();
 
   String? _filePath;
