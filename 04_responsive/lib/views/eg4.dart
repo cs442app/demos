@@ -1,5 +1,5 @@
-/// Basic responsive layout with a dynamic drawer/menu, implemented using
-/// information obtained via `MediaQuery`.
+// Basic responsive layout with a dynamic drawer/menu, implemented using
+// information obtained via `MediaQuery`.
 
 import 'package:flutter/material.dart';
 
@@ -56,7 +56,8 @@ class _App4State extends State<App4> {
         : Container();
     
     // build our responsive layout (what happens at width = 600?)
-    return Scaffold(
+    return MaterialApp(
+      home: Scaffold(
         appBar: appBar,
         drawer: drawer,
         body: Row(
@@ -76,12 +77,14 @@ class _App4State extends State<App4> {
             )
           ],
         ),
+      ),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
 
 
-/// A simple menu widget that can be used in a drawer or as a menu
+// A simple menu widget that can be used in a drawer or as a menu
 class Menu extends StatelessWidget {
   final bool isDrawer;
   final List<String> items;

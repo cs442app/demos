@@ -1,6 +1,6 @@
-/// An app that implements the standard drill-down menu pattern, but
-/// adapts to the screen size by using different layouts. We use a
-/// `LayoutBuilder` to rebuild widgets when the screen size changes.
+// An app that implements the standard drill-down menu pattern, but
+// adapts to the screen size by using different layouts. We use a
+// `LayoutBuilder` to rebuild widgets when the screen size changes.
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,17 +13,20 @@ class App5 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => MacGuffinCollection(50),
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          if (constraints.maxWidth < 800) {
-            return const SingleLayout();
-          } else {
-            return const DoubleLayout();
+    return MaterialApp(
+      home: ChangeNotifierProvider(
+        create: (context) => MacGuffinCollection(50),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            if (constraints.maxWidth < 800) {
+              return const SingleLayout();
+            } else {
+              return const DoubleLayout();
+            }
           }
-        }
-      )
+        )
+      ),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

@@ -1,6 +1,6 @@
-/// Example of a non-responsive app built using `flex` where:
-/// - the menu is always visible
-/// - the content area is always 3/4 of the screen width
+// Example of a non-responsive app built using `flex` where:
+// - the menu is always visible
+// - the content area is always 3/4 of the screen width
 
 import 'package:flutter/material.dart';
 
@@ -24,31 +24,34 @@ class _App2State extends State<App2> {
 
   @override
   Widget build(BuildContext context) {      
-    return Scaffold(
-      body: Row(
-        children: [
-          Expanded(
-            flex: 1, // 1/4 of the screen width
-            child: Menu(
-              items: _menuItems, 
-              selectedIndex: _selectedIndex,
-              onChange: _selectPage,
+    return MaterialApp(
+      home: Scaffold(
+        body: Row(
+          children: [
+            Expanded(
+              flex: 1, // 1/4 of the screen width
+              child: Menu(
+                items: _menuItems, 
+                selectedIndex: _selectedIndex,
+                onChange: _selectPage,
+              ),
             ),
-          ),
-          Expanded(
-            flex: 3, // 3/4 of the screen width
-            child: Container(
-              color: Colors.lightBlueAccent,
-              child: Center(
-                child: Text(
-                  _menuItems[_selectedIndex],
-                  style: Theme.of(context).textTheme.titleLarge,
+            Expanded(
+              flex: 3, // 3/4 of the screen width
+              child: Container(
+                color: Colors.lightBlueAccent,
+                child: Center(
+                  child: Text(
+                    _menuItems[_selectedIndex],
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
-      )
+          ],
+        )
+      ),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

@@ -1,5 +1,5 @@
-/// Demonstrates the use of Flexible and Expanded widgets,
-/// and how they interpret the "flex" property.
+// Demonstrates the use of Flexible and Expanded widgets,
+// and how they interpret the "flex" property.
 
 // From the docs: 
 //
@@ -31,18 +31,21 @@ class App1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Flex(
-          direction: direction,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            FlexibleChildren(childDirection, flexValues),
-            ExpandedChildren(childDirection, flexValues),
-            FlexibleAndExpandedChildren(childDirection, flexValues),
-          ],
-        )
+    return MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: Flex(
+            direction: direction,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              FlexibleChildren(childDirection, flexValues),
+              ExpandedChildren(childDirection, flexValues),
+              FlexibleAndExpandedChildren(childDirection, flexValues),
+            ],
+          )
+        ),
       ),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

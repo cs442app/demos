@@ -7,17 +7,5 @@ import 'views/eg4.dart';
 import 'views/eg5.dart';
 
 void main() {
-  runApp(const MainApp());
-}
-
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: App5(),
-    );
-  }
+  runApp(const App1());
 }

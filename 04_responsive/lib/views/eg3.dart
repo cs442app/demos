@@ -1,4 +1,4 @@
-/// Demonstrates the use of a MediaQuery to access device and platform data.
+// Demonstrates the use of a MediaQuery to access device and platform data.
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -28,21 +28,24 @@ class App3 extends StatelessWidget {
                          ? 'Dark Mode' : 'Light Mode',
     };
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Device and Platform Data'),
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Device and Platform Data'),
+        ),
+        body: ListView.builder(
+          itemCount: deviceData.length,
+          itemBuilder: (context, index) {
+            final key = deviceData.keys.elementAt(index);
+            final value = deviceData[key];
+            return ListTile(
+              title: Text(key),
+              subtitle: Text(value.toString()),
+            );
+          },
+        )
       ),
-      body: ListView.builder(
-        itemCount: deviceData.length,
-        itemBuilder: (context, index) {
-          final key = deviceData.keys.elementAt(index);
-          final value = deviceData[key];
-          return ListTile(
-            title: Text(key),
-            subtitle: Text(value.toString()),
-          );
-        },
-      )
+      debugShowCheckedModeBanner: false,
     );
   }
 }
