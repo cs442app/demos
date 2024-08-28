@@ -60,33 +60,32 @@ void strings() {
 /*****************************************************************************/
 
 void records() {
-  (double,double) point1 = (3.14, 2.71);
-
-  (double x, double y) point2 = (3, 2);
-
+  (double,double)        point1 = (3.14, 2.71);
+  (double x, double y)   point2 = (3, 2);
   ({double x, double y}) point3 = (x: 3, y: 2);
-
   ({double w, double z}) point4 = (w: 4, z: 3);
 
   var point5 = ('coordinates', x: 3.5, y: 2.1);
 
   print(point1.runtimeType);
-  print('point.x = ${point1.$1}, point.y = ${point1.$2}');
-
   print(point2.runtimeType);
+  print(point3.runtimeType);
+  print(point4.runtimeType);
+  print(point5.runtimeType);
+
+  print('point1.x = ${point1.$1}, point1.y = ${point1.$2}');
+
   print('point2.x = ${point2.$1}, point2.y = ${point2.$2}');
   // print('point2.x = ${point2.x}, point2.y = ${point2.y}');
 
   point1 = point2;
   print('point2.x = ${point2.$1}, point2.y = ${point2.$2}');
 
-  print(point3.runtimeType);
   print('point3.x = ${point3.x}, point3.y = ${point3.y}');
 
   // point1 = point3; // how to fix this?
   // point3 = point4; // how to fix this?
 
-  print(point5.runtimeType);
   print('${point5.$1}: point5.x = ${point5.x}, point5.y = ${point5.y}');
 }
 
@@ -97,6 +96,7 @@ void collections() {
   List<String> colors = ['red', 'green', 'blue'];
   print('List: $colors');
   print('Second color: ${colors[1]}');
+
   colors.add('yellow');
   print('List after adding yellow: $colors');
   print('List length: ${colors.length}');
@@ -104,8 +104,10 @@ void collections() {
   // Sets
   Set<int> numbers = {1, 2, 3, 4, 5};
   print('\nSet: $numbers');
+
   numbers.add(3); // Adding a duplicate value
   print('Set after adding duplicate: $numbers');
+  
   numbers.remove(2);
   print('Set after removing 2: $numbers');
   print('Set contains 5: ${numbers.contains(5)}');
