@@ -54,7 +54,7 @@ void nullableTypes() {
 
   print(n?.abs()); // `?.` is the null-aware `.` operator
 
-  print(n??0 + 10); // `??` takes a default value if the first operand is null
+  print(10 + n??0); // `??` takes a default value if the first operand is null
 }
 
 /*****************************************************************************/
