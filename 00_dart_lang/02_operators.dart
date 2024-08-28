@@ -8,8 +8,6 @@
  * - Increment and decrement operators
  * - Conditional (Ternary) operator
  * - Cascade notation
- * - Type test operators
- * - Null safety and related operators
  */
 
 void main() {
@@ -85,10 +83,4 @@ void main() {
     ..add(9)
     ..add(10);
   print(list);
-
-  // Type test operators
-  print("\nType Test Operators:");
-  var g = 10;
-  print("g is int: ${g is int}");
-  print("g is! int: ${g is! int}");
 }
