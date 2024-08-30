@@ -7,12 +7,14 @@
  * - Type test operators
  * - Null safety
  * - Generics
+ * - Final and const variables
  */
 
 void main() {
   simpleTypes();
   nullableTypes();
   complexTypes();
+  constAndFinalVars();
 }
 
 /*****************************************************************************/
@@ -95,4 +97,32 @@ void complexTypes() {
   // listOfStr2.add(42); // is this possible?
   // listOfStr2.add(null); // is this possible?
   // print(listOfStr2[0].length);
+}
+
+/*****************************************************************************/
+
+void constAndFinalVars() {
+  var i = 42;
+  var l = [1, 2, 3];
+
+  // i = 43;
+  // l.add(4);
+
+  final j = 42;
+  final m = [1, 2, 3];
+
+  // j = 43;
+  // m.add(4);
+
+  const k = 42;
+  const n = [1, 2, 3];
+
+  // k = 43;
+  // n.add(4);
+
+  // print(identical(i, j));
+  // print(identical(m, n));
+  // print(identical([1, 2, 3], [1, 2, 3]));
+  // print(identical(const [1, 2, 3], const [1, 2, 3]));
+  // print(identical(m, const [1, 2, 3]));
 }
