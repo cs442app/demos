@@ -101,6 +101,10 @@ void collections() {
   print('List after adding yellow: $colors');
   print('List length: ${colors.length}');
 
+  var moreColors = ['orange', 'purple'];
+  var allColors = [...colors, ...moreColors];
+  print('All colors: $allColors');
+
   // Sets
   Set<int> numbers = {1, 2, 3, 4, 5};
   print('\nSet: $numbers');
