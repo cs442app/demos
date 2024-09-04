@@ -135,8 +135,12 @@ void hofs() {
   });
 
 
+  var genItems = List.generate(10, (index) => 'Item $index');
+  print(genItems);
+  
+
   HttpClient()
-      .getUrl(Uri.parse('https://moss.cs.iit.edu/cs440'))
+      .getUrl(Uri.parse('https://moss.cs.iit.edu/cs442'))
       .then((request) => request.close())
       .then((response) => response.transform(Utf8Decoder()))
       .then((utf8) => utf8.transform(LineSplitter()))
