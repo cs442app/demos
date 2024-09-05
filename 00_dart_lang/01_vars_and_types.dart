@@ -43,6 +43,9 @@ void simpleTypes() {
   // more type conversions
   // inum = int.parse(snum);
   // snum = inum.toString();
+
+  //local level might not need to delarce types
+  //functions or global level yes
 }
 
 /*****************************************************************************/
@@ -56,7 +59,7 @@ void nullableTypes() {
 
   print(n?.abs()); // `?.` is the null-aware `.` operator
 
-  print(10 + n??0); // `??` takes a default value if the first operand is null
+  print(10 + n ?? 0); // `??` takes a default value if the first operand is null
 }
 
 /*****************************************************************************/
@@ -67,11 +70,11 @@ void complexTypes() {
   var snum = '442';
 
   // what are the inferred types of the following?
-  var listOfNum     = [inum, fpnum, -5, 0.01];
-  var listOfStr     = [snum, 'mobile', 'app', 'dev'];
-  var listOfAll     = [inum, fpnum, snum];
+  var listOfNum = [inum, fpnum, -5, 0.01];
+  var listOfStr = [snum, 'mobile', 'app', 'dev'];
+  var listOfAll = [inum, fpnum, snum];
   var listOfUnknown = [];
-  var listOfStr2    = <String>[];
+  var listOfStr2 = <String>[];
 
   print('listOfNum.runtimeType = ${listOfNum.runtimeType}');
   print('listOfStr.runtimeType = ${listOfStr.runtimeType}');
