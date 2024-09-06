@@ -80,19 +80,20 @@ void complexTypes() {
   var listOfUnknown = [];
   var listOfStr2 = <String>[];
 
-  print('listOfNum.runtimeType = ${listOfNum.runtimeType}');
-  print('listOfStr.runtimeType = ${listOfStr.runtimeType}');
-  print('listOfAll.runtimeType = ${listOfAll.runtimeType}');
-  print('listOfUnknown.runtimeType = ${listOfUnknown.runtimeType}');
-  print('listOfStr2.runtimeType = ${listOfStr2.runtimeType}');
+  // print('listOfNum.runtimeType = ${listOfNum.runtimeType}');
+  // print('listOfStr.runtimeType = ${listOfStr.runtimeType}');
+  // print('listOfAll.runtimeType = ${listOfAll.runtimeType}');
+  // print('listOfUnknown.runtimeType = ${listOfUnknown.runtimeType}'); //can be anything (not good, avoid dynamic)
+  // print('listOfStr2.runtimeType = ${listOfStr2.runtimeType}'); //guess the most specific type, int and doubles are both nums so class nums
 
   // print(listOfNum[0] + 10);
   // print(listOfAll[0] is int);
   // print(listOfAll[0] + 10); // how to fix this?
+  //answer: type cast => print((listOfAll[0] as int)+ 10); // how to fix this?
 
   // print(listOfStr[0].length);
   // print(listOfAll[2] is String);
-  // print(listOfAll[2].length); // how to fix this?
+  // print(listOfAll[2].length); // how to fix this? type cast
 
   // listOfUnknown.add('dart');
   // listOfUnknown.add(42);
@@ -101,7 +102,7 @@ void complexTypes() {
   // print(listOfUnknown[1].length);
 
   // listOfStr2.add('flutter');
-  // listOfStr2.add(42); // is this possible?
+  // listOfStr2.add(42); // is this possible? <= dynamic types
   // listOfStr2.add(null); // is this possible?
   // print(listOfStr2[0].length);
 }
@@ -116,13 +117,13 @@ void constAndFinalVars() {
   // l.add(4);
 
   final j = 42;
-  final m = [1, 2, 3];
+  final m = [1, 2, 3]; //<- can still be change
 
   // j = 43;
   // m.add(4);
 
   const k = 42;
-  const n = [1, 2, 3];
+  const n = [1, 2, 3]; // <- cannot be change
 
   // k = 43;
   // n.add(4);
