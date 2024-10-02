@@ -19,7 +19,7 @@ void main() {
       asyncFunction3a();
       break;
     case 4:
-      asyncFunction4();
+      asyncFunction4a();
       // create a timer that repeatedly invokes a callback
       Timer.periodic(Duration(milliseconds: 500), (timer) {
         print('Timer tick');
@@ -85,14 +85,31 @@ void asyncFunction3b() async {
   print('asyncFunction3b() finishing');
 }
 
-// multiple futures
-void asyncFunction4() async {
-  print('asyncFunction4() started');
-  var result = await Future.delayed(Duration(seconds: 1), () => 42);
+// same as below but with explicit futures
+void asyncFunction4a() {
+Future<int> future1 = Future<int>.delayed(Duration(seconds: 1), () => 42);
+future1.then((result) {
   print('First future resolved with result: $result');
-  result = await Future.delayed(Duration(seconds: 1), () => 43);
-  print('Second future resolved with result: $result');
-  result = await Future.delayed(Duration(seconds: 1), () => 44);
-  print('Third future resolved with result: $result');
-  print('asyncFunction4() finishing');
+  Future<int> future2 = Future<int>.delayed(Duration(seconds: 1), () => 43);
+  future2.then((result) {
+    print('Second future resolved with result: $result');
+    Future<int> future3 = Future<int>.delayed(Duration(seconds: 1), () => 44);
+    future3.then((result) {
+      print('Third future resolved with result: $result');
+      print('asyncFunction4a() finishing');
+    });
+  });
+});
+}
+
+// multiple futures
+void asyncFunction4b() async {
+  print('asyncFunction4() started');
+var result = await Future.delayed(Duration(seconds: 1), () => 42);
+print('First future resolved with result: $result');
+result = await Future.delayed(Duration(seconds: 1), () => 43);
+print('Second future resolved with result: $result');
+result = await Future.delayed(Duration(seconds: 1), () => 44);
+print('Third future resolved with result: $result');
+print('asyncFunction4() finishing');
 }
