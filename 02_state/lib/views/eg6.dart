@@ -2,6 +2,7 @@
  * - Using the `provider` package to disseminate a ChangeNotifier
  */
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:provider/provider.dart';
@@ -11,23 +12,25 @@ class App6 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // The ChangeNotifierProvider is an inherited widget that provides the model
-    // to all children in the widget tree
+    // wrap the widget tree with the provider inherited widget
     return ChangeNotifierProvider(
-      // this callback is used to create the model
-      create: (context) => CountersModel(), 
-      // the child widget (tree) that will have access to the model
+      // model is created lazily (only when first accessed)
+      create: (BuildContext context) => CountersModel(), 
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SumDisplay(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: List.generate(3, (i) => CounterDisplay(index: i))
+            children: List.generate(3, (i) {
+              return CounterDisplay(index: i);
+            })
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: List.generate(3, (i) => Incrementer(index: i, increment: i+1))
+            children: List.generate(3, (i) {
+              return Incrementer(index: i, increment: i+1);
+            })
           ),
         ],
       )
@@ -36,7 +39,7 @@ class App6 extends StatelessWidget {
 }
 
 
-class CountersModel with ChangeNotifier {
+class CountersModel with ChangeNotifier, DiagnosticableTreeMixin{
   final Map<int,int> _counts = {};
 
   int get sum => _counts.values.sum;
@@ -49,6 +52,14 @@ class CountersModel with ChangeNotifier {
     _counts[index] = getCount(index) + inc;
     notifyListeners();
   }
+
+  @override
+  // this method is used by the Flutter Widget Inspector
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    // expose map entries in widget details view
+    properties.add(IterableProperty('counts', _counts.entries));
+  }
 }
 
 
@@ -57,19 +68,14 @@ class SumDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // The Consumer widget listens to the model and rebuilds its subtree
-    // whenever the model sends notification of a change
-    return Consumer<CountersModel>(
-      builder: (context, counters, _) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text('Sum: ${counters.sum}'),
-        );
-      }
+    // rebuild whenever the model changes
+    var counters = context.watch<CountersModel>();
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text('Sum: ${counters.sum}'),
     );
   }
 }
-
 
 class CounterDisplay extends StatelessWidget {
   final int index;
@@ -78,15 +84,13 @@ class CounterDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // The Consumer widget listens to the model and rebuilds its subtree
-    // whenever the model sends notification of a change
-    return Consumer<CountersModel>(
-      builder: (context, counters, _) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text('Counter: ${counters.getCount(index)}'),
-        );
-      }
+    var val = context.select<CountersModel, int>((counters) {
+      // rebuild only when the value at index changes
+      return counters.getCount(index);
+    });
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text('Counter: $val'),
     );
   }
 }
@@ -104,11 +108,8 @@ class Incrementer extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: ElevatedButton(
         onPressed: () {
-          // Provider.of is used to access 
-          // The listen parameter is set to false to prevent the widget from
-          // rebuilding when the model changes
-          Provider.of<CountersModel>(context, listen: false)
-          .increment(index, increment ?? 1);
+          // `read` doesn't rebuild the widget when the model changes
+          context.read<CountersModel>().increment(index, increment ?? 1);
         },
         child: Text('+${increment ?? 1}')
       ),
