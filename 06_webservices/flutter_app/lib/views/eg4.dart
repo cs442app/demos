@@ -74,7 +74,7 @@ class _NewsClientState extends State<NewsClient> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 8),
-                      Text(article['description']),
+                      Text(article['description'] ?? ''),
                       const SizedBox(height: 8),
                       Text(
                         article['author'] ?? 'Unknown',
