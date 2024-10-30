@@ -93,7 +93,7 @@ def delete_post(id):
 
     cursor.execute('DELETE FROM posts WHERE id = ?', (id,))
     db.commit()
-    return json.dumps({'success': True})
+    return jsonify({'success': True})
 
 
 @app.route('/register', methods=['POST'])
@@ -167,7 +167,7 @@ def delete_user(username):
     cursor.execute('DELETE FROM users WHERE username = ?', (username,))
     db.commit()
 
-    return json.dumps({'success': True})
+    return jsonify({'success': True})
 
 
 @app.errorhandler(401)
