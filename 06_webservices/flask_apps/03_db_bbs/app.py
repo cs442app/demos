@@ -9,7 +9,6 @@ from flask_jwt_extended import (JWTManager, jwt_required,
                                 create_access_token, get_jwt_identity)
 from flask_bcrypt import Bcrypt
 import sqlite3
-import json
 from datetime import timedelta
 
 
@@ -186,7 +185,7 @@ def not_found(error):
 
 
 @app.errorhandler(409)
-def not_found(error):
+def conflict(error):
     return jsonify({'error': 'Conflict'}), 404
 
 

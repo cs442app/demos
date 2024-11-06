@@ -5,8 +5,6 @@ from flask import Flask, request, abort, jsonify
 
 app = Flask(__name__)
 
-POSTS = {} # in-memory database of post_id -> Post
-NEXT_POST_ID = 10000 # used to generate unique post IDs
 
 # A Post object represents a single post.    
 class Post:
@@ -20,6 +18,10 @@ class Post:
         self.title = title
         self.description = description
         self.author = author
+
+
+POSTS: dict[int, Post] = {} # in-memory database of post_id -> Post
+NEXT_POST_ID = 10000 # used to generate unique post IDs
 
 
 @app.route('/')
