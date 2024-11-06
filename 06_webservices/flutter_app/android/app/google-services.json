@@ -2,7 +2,7 @@
   "project_info": {
     "project_number": "680358361752",
     "project_id": "cs-442-demos",
-    "storage_bucket": "cs-442-demos.appspot.com"
+    "storage_bucket": "cs-442-demos.firebasestorage.app"
   },
   "client": [
     {

@@ -49,7 +49,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '680358361752',
     projectId: 'cs-442-demos',
     authDomain: 'cs-442-demos.firebaseapp.com',
-    storageBucket: 'cs-442-demos.appspot.com',
+    storageBucket: 'cs-442-demos.firebasestorage.app',
     measurementId: 'G-3WS3PMZ867',
   );
 
@@ -58,7 +58,7 @@ class DefaultFirebaseOptions {
     appId: '1:680358361752:android:4eb1e9055a7733777c2eed',
     messagingSenderId: '680358361752',
     projectId: 'cs-442-demos',
-    storageBucket: 'cs-442-demos.appspot.com',
+    storageBucket: 'cs-442-demos.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -66,18 +66,19 @@ class DefaultFirebaseOptions {
     appId: '1:680358361752:ios:e6a7135632d5afc47c2eed',
     messagingSenderId: '680358361752',
     projectId: 'cs-442-demos',
-    storageBucket: 'cs-442-demos.appspot.com',
+    storageBucket: 'cs-442-demos.firebasestorage.app',
     iosClientId: '680358361752-tv5i0pmnf9ju5eid81lh8pmut6pj3l3l.apps.googleusercontent.com',
     iosBundleId: 'com.example.flutterApplication1',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyCA9RMiPXxoJlCDH4UKki_Z5zTGwXWNnZU',
-    appId: '1:680358361752:ios:55290422f5c42c2e7c2eed',
+    appId: '1:680358361752:ios:e6a7135632d5afc47c2eed',
     messagingSenderId: '680358361752',
     projectId: 'cs-442-demos',
-    storageBucket: 'cs-442-demos.appspot.com',
-    iosClientId: '680358361752-bt85ts2cgatsc7opi9re03mkr1c6aqat.apps.googleusercontent.com',
-    iosBundleId: 'com.example.flutterApplication1.RunnerTests',
+    storageBucket: 'cs-442-demos.firebasestorage.app',
+    iosClientId: '680358361752-tv5i0pmnf9ju5eid81lh8pmut6pj3l3l.apps.googleusercontent.com',
+    iosBundleId: 'com.example.flutterApplication1',
   );
+
 }
