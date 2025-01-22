@@ -48,7 +48,7 @@ void simpleTypes() {
 /*****************************************************************************/
 
 void nullableTypes() {
-  int n = 10; // try initializing with `null`
+  int n = 442; // try initializing with `null`
 
   print('n.runtimeType = ${n.runtimeType}');
 
@@ -56,7 +56,7 @@ void nullableTypes() {
 
   print(n?.abs()); // `?.` is the null-aware `.` operator
 
-  print(10 + n??0); // `??` takes a default value if the first operand is null
+  print(10 + (n??0)); // `??` takes a default value if the first operand is null
 }
 
 /*****************************************************************************/
