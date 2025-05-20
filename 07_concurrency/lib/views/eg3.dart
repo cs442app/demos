@@ -79,21 +79,17 @@ class _App3State extends State<App3> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ElevatedButton(
-                    onPressed: () {
-                      setState(() => isTaskRunning = true);
-                      isTaskRunning = true;
-                      startLongComputation().then(
-                        (value) => setState(() {
-                          isTaskRunning = false;
-                        })
-                      );
-                    },
-                      child: const Text('Start isolate (sync)')
-                  ),
+                      onPressed: () {
+                        setState(() => isTaskRunning = true);
+                        isTaskRunning = true;
+                        startLongComputation().then((value) => setState(() {
+                              isTaskRunning = false;
+                            }));
+                      },
+                      child: const Text('Start isolate (sync)')),
                   ElevatedButton(
-                    onPressed: () => startLongComputation(),
-                    child: const Text('Start isolate (async)')
-                  ),
+                      onPressed: () => startLongComputation(),
+                      child: const Text('Start isolate (async)')),
                 ],
               ),
             ],
