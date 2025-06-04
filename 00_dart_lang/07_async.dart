@@ -119,6 +119,20 @@ void asyncFunction4a() {
     });
   });
 
+  // a better way to chain futures (allows for easier exception handling)
+  // future1
+  //     .then((result) {
+  //       print('First future resolved with result: $result');
+  //       return Future<int>.delayed(Duration(seconds: 1), () => 43);
+  //     })
+  //     .then((result) {
+  //       print('Second future resolved with result: $result');
+  //       return Future<int>.delayed(Duration(seconds: 1), () => 44);
+  //     })
+  //     .then((result) {
+  //       print('Third future resolved with result: $result');
+  //     });
+
   print('asyncFunction4a() finishing');
 }
 
