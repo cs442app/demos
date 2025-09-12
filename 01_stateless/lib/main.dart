@@ -31,7 +31,6 @@ import 'views/eg4.dart';
 import 'views/eg5.dart';
 import 'views/eg6.dart';
 
-
 void main() {
   runApp(const Placeholder());
   // eg1();

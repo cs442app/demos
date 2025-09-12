@@ -12,18 +12,16 @@ class App5 extends StatelessWidget {
         title: const Text('My first list app'),
       ),
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () => print('Add button clicked')
-      ),
+          child: const Icon(Icons.add),
+          onPressed: () => print('Add button clicked')),
       body: ListView(
-        // can you add the tiles 'Lions', 'Tigers', 'Bears', and 'Oh my!'?
-        children: [
-          ListTile(
-            title: const Text('Hello World!'),
-            onTap: () => print('"Hello World!" clicked'),
-          ),
-        ]
-      ),
+          // can you add the tiles 'Lions', 'Tigers', 'Bears', and 'Oh my!'?
+          children: [
+            ListTile(
+              title: const Text('Hello World!'),
+              onTap: () => print('"Hello World!" clicked'),
+            ),
+          ]),
     );
   }
 }

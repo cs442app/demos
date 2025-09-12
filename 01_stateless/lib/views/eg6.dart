@@ -11,73 +11,61 @@ class App6 extends StatelessWidget {
   Widget build(BuildContext context) {
     const foods = {
       FavoriteItem(
-        name: 'Pizza',
-        description: 'A delicious pie of cheese and sauce',
-        imagePath: 'assets/images/pizza.jpg'
-      ),
+          name: 'Pizza',
+          description: 'A delicious pie of cheese and sauce',
+          imagePath: 'assets/images/pizza.jpg'),
       FavoriteItem(
-        name: 'Burger',
-        description: 'A juicy burger with all the fixings',
-        imagePath: 'assets/images/burger.jpg'
-      ),
+          name: 'Burger',
+          description: 'A juicy burger with all the fixings',
+          imagePath: 'assets/images/burger.jpg'),
       FavoriteItem(
-        name: 'Ice Cream',
-        description: 'A sweet treat to cool you down',
-        imagePath: 'assets/images/ice_cream.jpg'
-      ),
+          name: 'Ice Cream',
+          description: 'A sweet treat to cool you down',
+          imagePath: 'assets/images/ice_cream.jpg'),
     };
 
     const languages = {
       FavoriteItem(
-        name: 'Haskell',
-        description: 'A purely functional programming language',
-        imagePath: 'assets/images/haskell.png'
-      ),
+          name: 'Haskell',
+          description: 'A purely functional programming language',
+          imagePath: 'assets/images/haskell.png'),
       FavoriteItem(
-        name: 'Lisp',
-        description: 'Lots of irritating superfluous parentheses',
-        imagePath: 'assets/images/lisp.png'
-      ),
+          name: 'Lisp',
+          description: 'Lots of irritating superfluous parentheses',
+          imagePath: 'assets/images/lisp.png'),
       FavoriteItem(
-        name: 'Rust',
-        description: 'A systems programming language',
-        imagePath: 'assets/images/rust.png'
-      ),
+          name: 'Rust',
+          description: 'A systems programming language',
+          imagePath: 'assets/images/rust.png'),
     };
 
     // can you spot the nested `Row` and `Column` widgets?
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('My Favorite Things'),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Foods', 
-            style: Theme.of(context).textTheme.headlineLarge
-          ),
-          const SizedBox(height: 15),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: foods.map((item) => FavoriteWidget(item: item)).toList(),
-          ),
-          const SizedBox(height: 30),
-          Text(
-            'Languages', 
-            style: Theme.of(context).textTheme.headlineLarge
-          ),
-          const SizedBox(height: 15),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: languages.map((item) => FavoriteWidget(item: item)).toList(),
-          ),
-        ],
-      )
-    );
+        appBar: AppBar(
+          title: const Text('My Favorite Things'),
+        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Foods', style: Theme.of(context).textTheme.headlineLarge),
+            const SizedBox(height: 15),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children:
+                  foods.map((item) => FavoriteWidget(item: item)).toList(),
+            ),
+            const SizedBox(height: 30),
+            Text('Languages', style: Theme.of(context).textTheme.headlineLarge),
+            const SizedBox(height: 15),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children:
+                  languages.map((item) => FavoriteWidget(item: item)).toList(),
+            ),
+          ],
+        ));
   }
 }
-
 
 class FavoriteItem {
   final String name;
@@ -91,7 +79,6 @@ class FavoriteItem {
   });
 }
 
-
 class FavoriteWidget extends StatelessWidget {
   final FavoriteItem item;
 
@@ -104,13 +91,12 @@ class FavoriteWidget extends StatelessWidget {
       child: Column(
         children: [
           GestureDetector(
-            child: Image.asset(
-              item.imagePath,
-              width: 100,
-              height: 100,
-            ),
-            onTap: () => _showSnackBar(context, item.description)
-          ),
+              child: Image.asset(
+                item.imagePath,
+                width: 100,
+                height: 100,
+              ),
+              onTap: () => _showSnackBar(context, item.description)),
           const SizedBox(height: 8),
           Text(
             item.name,
@@ -123,11 +109,9 @@ class FavoriteWidget extends StatelessWidget {
 
   // a "Snackbar" is a Material widget that appears at the bottom of the screen
   void _showSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        duration: const Duration(milliseconds: 500),
-      )
-    );
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+      duration: const Duration(milliseconds: 500),
+    ));
   }
 }

@@ -9,34 +9,26 @@ class App4 extends StatelessWidget {
   Widget build(BuildContext context) {
     return const AncestralTraits(
       // the following property is inherited by descendant widgets
-      traits: { 'surname': 'Smith', 'homeworld': 'Earth'},
+      traits: {'surname': 'Smith', 'homeworld': 'Earth'},
       child: Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              DescendantWidget('surname'),
-              DescendantWidget('homeworld'),
-            ]
-          ),
-        )
-      ),
+          body: Center(
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          DescendantWidget('surname'),
+          DescendantWidget('homeworld'),
+        ]),
+      )),
     );
   }
 }
 
-
 // As an inherited widget, AncestralTraits is a widget whose properties
 // are inherited by (and accessible from) its descendants.
 class AncestralTraits extends InheritedWidget {
-  final Map<String,String> traits;
-  
-  const AncestralTraits({
-    required this.traits, 
-    required super.child, 
-    super.key
-  });
- 
+  final Map<String, String> traits;
+
+  const AncestralTraits(
+      {required this.traits, required super.child, super.key});
+
   // This method determines whether descendant widgets should be rebuilt
   // (because descendants may depend on my properties).
   @override
@@ -57,7 +49,6 @@ class AncestralTraits extends InheritedWidget {
     return result!;
   }
 }
-
 
 class DescendantWidget extends StatelessWidget {
   final String displayedTrait;
