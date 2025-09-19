@@ -23,32 +23,23 @@ class _App3State extends State<App3> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text('Sum: ${_counters.sum}'),
-        const SizedBox(height: 8),
-        Row(
+    return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Text('Sum: ${_counters.sum}'),
+      const SizedBox(height: 8),
+      Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: 
-            List.generate(_counters.length, (i) {
-              return Column(
-                children: [
-                  CounterDisplay(_counters[i]),
-                  Incrementer(
-                    label: '+${i+1}', 
-                    // this callback decouples the child from our implementation
-                    onPressed: () => _incrementCounter(i, i+1)
-                  ),
-                ]
-              );
-            })
-        )
-      ]
-    );
+          children: List.generate(_counters.length, (i) {
+            return Column(children: [
+              CounterDisplay(_counters[i]),
+              Incrementer(
+                  label: '+${i + 1}',
+                  // this callback decouples the child from our implementation
+                  onPressed: () => _incrementCounter(i, i + 1)),
+            ]);
+          }))
+    ]);
   }
 }
-
 
 class CounterDisplay extends StatelessWidget {
   final int val;
@@ -64,7 +55,6 @@ class CounterDisplay extends StatelessWidget {
   }
 }
 
-
 class Incrementer extends StatelessWidget {
   final String? label;
   final VoidCallback? onPressed;
@@ -76,9 +66,7 @@ class Incrementer extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ElevatedButton(
-        onPressed: onPressed,
-        child: Text(label ?? 'Increment')
-      ),
+          onPressed: onPressed, child: Text(label ?? 'Increment')),
     );
   }
 }

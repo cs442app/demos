@@ -23,32 +23,16 @@ class _App2State extends State<App2> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        CounterDisplay(_counter),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Incrementer(
-              label: '+1', 
-              onPressed: () => _incrementCounter(1)
-            ),
-            Incrementer(
-              label: '+2', 
-              onPressed: () => _incrementCounter(2)
-            ),
-            Incrementer(
-              label: '+3', 
-              onPressed: () => _incrementCounter(3)
-            )
-          ]
-        )
-      ]
-    );
+    return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+      CounterDisplay(_counter),
+      Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+        Incrementer(label: '+1', onPressed: () => _incrementCounter(1)),
+        Incrementer(label: '+2', onPressed: () => _incrementCounter(2)),
+        Incrementer(label: '+3', onPressed: () => _incrementCounter(3))
+      ])
+    ]);
   }
 }
-
 
 class CounterDisplay extends StatelessWidget {
   final int val;
@@ -64,7 +48,6 @@ class CounterDisplay extends StatelessWidget {
   }
 }
 
-
 class Incrementer extends StatelessWidget {
   final String? label;
   final VoidCallback? onPressed;
@@ -76,9 +59,7 @@ class Incrementer extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ElevatedButton(
-        onPressed: onPressed,
-        child: Text(label ?? 'Increment')
-      ),
+          onPressed: onPressed, child: Text(label ?? 'Increment')),
     );
   }
 }

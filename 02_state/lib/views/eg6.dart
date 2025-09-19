@@ -14,36 +14,32 @@ class App6 extends StatelessWidget {
   Widget build(BuildContext context) {
     // wrap the widget tree with the provider inherited widget
     return ChangeNotifierProvider(
-      // model is created lazily (only when first accessed)
-      create: (BuildContext context) => CountersModel(), 
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const SumDisplay(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: List.generate(3, (i) {
-              return CounterDisplay(index: i);
-            })
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: List.generate(3, (i) {
-              return Incrementer(index: i, increment: i+1);
-            })
-          ),
-        ],
-      )
-    );
+        // model is created lazily (only when first accessed)
+        create: (BuildContext context) => CountersModel(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SumDisplay(),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: List.generate(3, (i) {
+                  return CounterDisplay(index: i);
+                })),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: List.generate(3, (i) {
+                  return Incrementer(index: i, increment: i + 1);
+                })),
+          ],
+        ));
   }
 }
 
-
-class CountersModel with ChangeNotifier, DiagnosticableTreeMixin{
-  final Map<int,int> _counts = {};
+class CountersModel with ChangeNotifier, DiagnosticableTreeMixin {
+  final Map<int, int> _counts = {};
 
   int get sum => _counts.values.sum;
-  
+
   int getCount(int index) {
     return _counts[index] ?? 0;
   }
@@ -61,7 +57,6 @@ class CountersModel with ChangeNotifier, DiagnosticableTreeMixin{
     properties.add(IterableProperty('counts', _counts.entries));
   }
 }
-
 
 class SumDisplay extends StatelessWidget {
   const SumDisplay({super.key});
@@ -95,7 +90,6 @@ class CounterDisplay extends StatelessWidget {
   }
 }
 
-
 class Incrementer extends StatelessWidget {
   final int index;
   final int? increment;
@@ -107,12 +101,11 @@ class Incrementer extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ElevatedButton(
-        onPressed: () {
-          // `read` doesn't rebuild the widget when the model changes
-          context.read<CountersModel>().increment(index, increment ?? 1);
-        },
-        child: Text('+${increment ?? 1}')
-      ),
+          onPressed: () {
+            // `read` doesn't rebuild the widget when the model changes
+            context.read<CountersModel>().increment(index, increment ?? 1);
+          },
+          child: Text('+${increment ?? 1}')),
     );
   }
 }
